@@ -1,0 +1,759 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+ <processor attributetable="modelAttrs"
+    defaultsemihostname="armNewlib"
+    elfcode="40"
+    endian="either"
+    gdbpath="$IMPERAS_HOME/lib/$IMPERAS_ARCH/CrossCompiler/arm-elf/bin/arm-elf-gdb"
+    imagefile="model"
+    library="processor"
+    name="arm"
+    useindefaultplatform="T"
+    vendor="arm.ovpworld.org"
+    version="1.0">
+    <documentation name="Description">ARM Processor Model</documentation>
+    <documentation name="License">Imperas Modified Apache 2.0 Open Source License</documentation>
+    <documentation name="Configuration">
+        Attribute 'variant' selects either an instruction set architecture (ISA) or a specific processor variant.
+        See 'armConfigList.c' in the model source directory for the default configuration settings for each variant.
+        Attribute 'compatibility' modifies some behavior for compatibility with other simulators.
+        Attribute 'showHiddenRegs' shows hidden registers in register dump.
+        Various 'override_*' attributes allow default configuration settings to be overridden.</documentation>
+    <documentation name="Limitations">
+		Security Extensions are not yet implemented.
+		Performance Monitors are not implemented.</documentation>
+    <formalattribute name="variant"
+        type="enumeration">
+        <documentation name="Description">Selects variant (either a generic ISA or a specific model)</documentation>
+        <enum name="ARMv4xM"/>
+        <enum name="ARMv4"/>
+        <enum name="ARMv4TxM"/>
+        <enum name="ARMv4T"/>
+        <enum name="ARMv5xM"/>
+        <enum name="ARMv5"/>
+        <enum name="ARMv5TxM"/>
+        <enum name="ARMv5T"/>
+        <enum name="ARMv5TExP"/>
+        <enum name="ARMv5TE"/>
+        <enum name="ARMv5TEJ"/>
+        <enum name="ARMv6"/>
+        <enum name="ARMv6K"/>
+        <enum name="ARMv6T2"/>
+        <enum name="ARMv7"/>
+        <enum name="ARM7TDMI"/>
+        <enum name="ARM7EJ-S"/>
+        <enum name="ARM720T"/>
+        <enum name="ARM920T"/>
+        <enum name="ARM922T"/>
+        <enum name="ARM926EJ-S"/>
+        <enum name="ARM940T"/>
+        <enum name="ARM946E"/>
+        <enum name="ARM966E"/>
+        <enum name="ARM968E-S"/>
+        <enum name="ARM1020E"/>
+        <enum name="ARM1022E"/>
+        <enum name="ARM1026EJ-S"/>
+        <enum name="ARM1136J-S"/>
+        <enum name="ARM1156T2-S"/>
+        <enum name="Cortex-A5UP"/>
+        <enum name="Cortex-A8"/>
+        <enum name="Cortex-A9UP"/>
+        <enum name="Cortex-A9MP"/>
+        <enum name="Cortex-A9MPx1"/>
+        <enum name="Cortex-A9MPx2"/>
+        <enum name="Cortex-A9MPx3"/>
+        <enum name="Cortex-A9MPx4"/>
+    </formalattribute>
+    <formalattribute name="highVectors"
+        type="enumeration">
+        <documentation name="Description">Specify whether high exception vectors should be used</documentation>
+        <enum name="0"/>
+        <enum name="1"/>
+    </formalattribute>
+    <formalattribute name="verbose"
+        type="enumeration">
+        <documentation name="Description">Specify verbosity of output</documentation>
+        <enum name="0"/>
+        <enum name="1"/>
+    </formalattribute>
+    <formalattribute name="compatibility"
+        type="enumeration">
+        <documentation name="Description">Specify compatibility mode</documentation>
+        <enum name="ISA"/>
+        <enum name="gdb"/>
+        <enum name="nopSVC"/>
+    </formalattribute>
+    <formalattribute name="showHiddenRegs"
+        type="enumeration">
+        <documentation name="Description">Show hidden registers in register dump</documentation>
+        <enum name="0"/>
+        <enum name="1"/>
+    </formalattribute>
+    <formalattribute name="UAL"
+        type="enumeration">
+        <documentation name="Description">Disassemble using UAL syntax</documentation>
+        <enum name="0"/>
+        <enum name="1"/>
+    </formalattribute>
+    <formalattribute name="enableVFPAtReset"
+        type="enumeration">
+        <documentation name="Description">Enable vector floating point (SIMD and VFP) instructions at reset. (Enables cp10/11 in CPACR and sets FPEXC.EN)</documentation>
+        <enum name="0"/>
+        <enum name="1"/>
+    </formalattribute>
+    <formalattribute name="override_MainId"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 MainId register</documentation>
+    </formalattribute>
+    <formalattribute name="override_CacheType"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 CacheType register</documentation>
+    </formalattribute>
+    <formalattribute name="override_TLBType"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 TLBType register</documentation>
+    </formalattribute>
+    <formalattribute name="override_MPUType"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 MPUType register</documentation>
+    </formalattribute>
+    <formalattribute name="override_InstructionAttributes0"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 InstructionAttributes0 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_InstructionAttributes1"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 InstructionAttributes1 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_InstructionAttributes2"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 InstructionAttributes2 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_InstructionAttributes3"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 InstructionAttributes3 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_InstructionAttributes4"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 InstructionAttributes4 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_InstructionAttributes5"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 InstructionAttributes5 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_CLIDR"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 CLIDR register</documentation>
+    </formalattribute>
+    <formalattribute name="override_AIDR"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 AIDR register</documentation>
+    </formalattribute>
+    <formalattribute name="override_CBAR"
+        type="integer">
+        <documentation name="Description">Override coprocessor 15 CBAR register</documentation>
+    </formalattribute>
+    <formalattribute name="override_FPSID"
+        type="integer">
+        <documentation name="Description">Override SIMD/VFP FPSID register</documentation>
+    </formalattribute>
+    <formalattribute name="override_MVFR0"
+        type="integer">
+        <documentation name="Description">Override SIMD/VFP MVFR0 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_MVFR1"
+        type="integer">
+        <documentation name="Description">Override SIMD/VFP MVFR1 register</documentation>
+    </formalattribute>
+    <formalattribute name="override_Control_V"
+        type="integer">
+        <documentation name="Description">Override Control/V bit with the passed value (enables high vectors)</documentation>
+    </formalattribute>
+    <formalattribute name="override_rotateUnaligned"
+        type="integer">
+        <documentation name="Description">Specifies that data from unaligned loads by LDR, LDRT or SWP should be rotated (if 1)</documentation>
+    </formalattribute>
+    <formalattribute name="override_STRoffsetPC12"
+        type="integer">
+        <documentation name="Description">Specifies that STR/STR of PC should do so with 12:byte offset from the current instruction (if 1), otherwise an 8:byte offset is used</documentation>
+    </formalattribute>
+    <formalattribute name="override_align64as32"
+        type="integer">
+        <documentation name="Description">Specifies that 64:bit loads and stores are aligned to 32:bit boundaries (if 1)</documentation>
+    </formalattribute>
+    <formalattribute name="override_fcsePresent"
+        type="integer">
+        <documentation name="Description">Specifies that FCSE is present (if 1)</documentation>
+    </formalattribute>
+    <formalattribute name="override_mpuV5ExtAP"
+        type="integer">
+        <documentation name="Description">Specifies that ARMv5 MPU extended access permissiones implemented (cp15/5/2 and cp15/5/2)</documentation>
+    </formalattribute>
+    <formalattribute name="override_fcseRequiresMMU"
+        type="integer">
+        <documentation name="Description">Specifies that FCSE is active only when MMU is enabled (if 1)</documentation>
+    </formalattribute>
+    <formalattribute name="override_ERG"
+        type="integer">
+        <documentation name="Description">Specifies exclusive reservation granule (in range 3..11)</documentation>
+    </formalattribute>
+    <formalattribute name="override_debugMask"
+        type="integer">
+        <documentation name="Description">Specifies debug mask, enabling debug output for model components</documentation>
+    </formalattribute>
+    <formalattribute name="override_ignoreBadCp15"
+        type="integer">
+        <documentation name="Description">Specifies whether invalid coprocessor 15 access should be ignored (if 1) or cause Invalid Instruction exceptions (if 0)</documentation>
+    </formalattribute>
+    <formalattribute name="override_fpexcDexPresent"
+        type="integer">
+        <documentation name="Description">Specifies whether the FPEXC.DEX register field is implemented (if 1)</documentation>
+    </formalattribute>
+    <formalattribute name="override_advSIMD"
+        type="integer">
+        <documentation name="Description">Specifies whether Advanced SIMD extensions are present  (1=present, 0=not present)</documentation>
+    </formalattribute>
+    <formalattribute name="override_vfp"
+        type="integer">
+        <documentation name="Description">Specifies whether VFP extensions are present (1=present, 0=not present)</documentation>
+    </formalattribute>
+    <formalattribute name="override_numCPUs"
+        type="integer">
+        <documentation name="Description">Specify the number of cores in a multiprocessor</documentation>
+    </formalattribute>
+    <busmasterport addresswidth="32"
+        errorinterrupt="pabort"
+        mustbeconnected="T"
+        name="INSTRUCTION"/>
+    <busmasterport addresswidth="32"
+        errorinterrupt="dabort"
+        name="DATA"/>
+    <netport name="fiq"
+        type="input"
+        updatefunctionargument="0"/>
+    <netport name="irq"
+        type="input"
+        updatefunctionargument="0"/>
+    <netport name="reset"
+        type="input"
+        updatefunctionargument="0"/>
+    <netport name="pabort"
+        type="input"
+        updatefunctionargument="0"/>
+    <netport name="dabort"
+        type="input"
+        updatefunctionargument="0"/>
+    <netport name="nDMAIRQ"
+        type="output"
+        updatefunctionargument="0"/>
+    <registers name="registers">
+        <register name="r0"
+            width="32"/>
+        <register name="r1"
+            width="32"/>
+        <register name="r2"
+            width="32"/>
+        <register name="r3"
+            width="32"/>
+        <register name="r4"
+            width="32"/>
+        <register name="r5"
+            width="32"/>
+        <register name="r6"
+            width="32"/>
+        <register name="r7"
+            width="32"/>
+        <register name="r8"
+            width="32"/>
+        <register name="r9"
+            width="32"/>
+        <register name="r10"
+            width="32"/>
+        <register name="r11"
+            type="3"
+            width="32"/>
+        <register name="r12"
+            width="32"/>
+        <register name="sp"
+            type="2"
+            width="32"/>
+        <register name="lr"
+            type="9"
+            width="32"/>
+        <register name="pc"
+            type="1"
+            width="32"/>
+        <register name="f0"
+            type="7"
+            width="96"/>
+        <register name="f1"
+            type="7"
+            width="96"/>
+        <register name="f2"
+            type="7"
+            width="96"/>
+        <register name="f3"
+            type="7"
+            width="96"/>
+        <register name="f4"
+            type="7"
+            width="96"/>
+        <register name="f5"
+            type="7"
+            width="96"/>
+        <register name="f6"
+            type="7"
+            width="96"/>
+        <register name="f7"
+            type="7"
+            width="96"/>
+        <register name="fps"
+            type="8"
+            width="32"/>
+        <register name="cpsr"
+            type="8"
+            width="32"/>
+        <register name="spsr"
+            width="32"/>
+        <register name="r8_usr"
+            width="32"/>
+        <register name="r9_usr"
+            width="32"/>
+        <register name="r10_usr"
+            width="32"/>
+        <register name="r11_usr"
+            width="32"/>
+        <register name="r12_usr"
+            width="32"/>
+        <register name="sp_usr"
+            width="32"/>
+        <register name="lr_usr"
+            width="32"/>
+        <register name="r8_fiq"
+            width="32"/>
+        <register name="r9_fiq"
+            width="32"/>
+        <register name="r10_fiq"
+            width="32"/>
+        <register name="r11_fiq"
+            width="32"/>
+        <register name="r12_fiq"
+            width="32"/>
+        <register name="sp_fiq"
+            width="32"/>
+        <register name="lr_fiq"
+            width="32"/>
+        <register name="spsr_fiq"
+            width="32"/>
+        <register name="sp_irq"
+            width="32"/>
+        <register name="lr_irq"
+            width="32"/>
+        <register name="spsr_irq"
+            width="32"/>
+        <register name="sp_svc"
+            width="32"/>
+        <register name="lr_svc"
+            width="32"/>
+        <register name="spsr_svc"
+            width="32"/>
+        <register name="sp_undef"
+            width="32"/>
+        <register name="lr_undef"
+            width="32"/>
+        <register name="spsr_undef"
+            width="32"/>
+        <register name="sp_abt"
+            width="32"/>
+        <register name="lr_abt"
+            width="32"/>
+        <register name="spsr_abt"
+            width="32"/>
+        <register name="d0"
+            width="64"/>
+        <register name="d1"
+            width="64"/>
+        <register name="d2"
+            width="64"/>
+        <register name="d3"
+            width="64"/>
+        <register name="d4"
+            width="64"/>
+        <register name="d5"
+            width="64"/>
+        <register name="d6"
+            width="64"/>
+        <register name="d7"
+            width="64"/>
+        <register name="d8"
+            width="64"/>
+        <register name="d9"
+            width="64"/>
+        <register name="d10"
+            width="64"/>
+        <register name="d11"
+            width="64"/>
+        <register name="d12"
+            width="64"/>
+        <register name="d13"
+            width="64"/>
+        <register name="d14"
+            width="64"/>
+        <register name="d15"
+            width="64"/>
+        <register name="d16"
+            width="64"/>
+        <register name="d17"
+            width="64"/>
+        <register name="d18"
+            width="64"/>
+        <register name="d19"
+            width="64"/>
+        <register name="d20"
+            width="64"/>
+        <register name="d21"
+            width="64"/>
+        <register name="d22"
+            width="64"/>
+        <register name="d23"
+            width="64"/>
+        <register name="d24"
+            width="64"/>
+        <register name="d25"
+            width="64"/>
+        <register name="d26"
+            width="64"/>
+        <register name="d27"
+            width="64"/>
+        <register name="d28"
+            width="64"/>
+        <register name="d29"
+            width="64"/>
+        <register name="d30"
+            width="64"/>
+        <register name="d31"
+            width="64">
+            <documentation name="Description">CP14 Register Names and Indexes
+  Name                     op1 op2 crn crm Unit     Notes
+  TEECR,                   6,  0,  0,  0,  ThumbEE, ARMv7 and later
+  TEEHBR,                  6,  0,  1,  0,  ThumbEE, ARMv7 and later
+  JIDR,                    7,  0,  0,  0,  Jazelle, ARMv5TEJ and later
+  JOSCR,                   7,  0,  1,  0,  Jazelle, ARMv5TEJ and later
+  JMCR,                    7,  0,  2,  0,  Jazelle, ARMv5TEJ and later</documentation>
+            <documentation name="Description_1">CP15 Register Names and Indexes
+  Name                    op1 op2 crn crm  Unit     Notes
+  MIDR                     0   *   0   0   all
+  CTR                      0   1   0   0   all
+  TCMTR                    0   2   0   0   all
+  TLBTR                    0   3   0   0   MMU      ARMv6 and later
+  MPUIR                    0   4   0   0   MPU      ARMv6 and later
+  MPIDR                    0   5   0   0   all      ARMv7 and later
+  ID_PFR0                  0   0   0   1   all      ARMv6 and later
+  ID_PFR1                  0   1   0   1   all      ARMv6 and later
+  ID_DFR0                  0   2   0   1   all      ARMv6 and later
+  ID_AFR0                  0   3   0   1   all      ARMv6 and later
+  ID_MMFR0                 0   4   0   1   all      ARMv6 and later
+  ID_MMFR1                 0   5   0   1   all      ARMv6 and later
+  ID_MMFR2                 0   6   0   1   all      ARMv6 and later
+  ID_MMFR3                 0   7   0   1   all      ARMv6 and later
+  ID_ISAR0                 0   0   0   2   all      ARMv6 and later
+  ID_ISAR1                 0   1   0   2   all      ARMv6 and later
+  ID_ISAR2                 0   2   0   2   all      ARMv6 and later
+  ID_ISAR3                 0   3   0   2   all      ARMv6 and later
+  ID_ISAR4                 0   4   0   2   all      ARMv6 and later
+  ID_ISAR5                 0   5   0   2   all      ARMv6 and later
+  CCSIDR                   1   0   0   0   all      ARMv7 and later
+  CLIDR                    1   1   0   0   all      ARMv7 and later
+  AIDR                     1   7   0   0   all      ARMv7 and later
+  CSSELR                   2   0   0   0   all      ARMv7 and later
+  SCTLR                    0   0   1   0   all
+  ACTLR                    0   1   1   0   all      ARMv6 and later
+  CPACR                    0   2   1   0   all      ARMv6 and later
+  TTBR                     0   0   2   0   MMU      ARMv4/ARMv5 only
+  TTBR0                    0   0   2   0   MMU      ARMv6 and later
+  TTBR1                    0   1   2   0   MMU      ARMv6 and later
+  TTBCR                    0   2   2   0   MMU      ARMv6 and later
+  DCR                      0   0   2   0   MPU      ARMv4/ARMv5 only
+  ICR                      0   1   2   0   MPU      ARMv4/ARMv5 only
+  DACR                     0   0   3   0   MMU
+  DBR                      0   0   3   0   MPU      ARMv4/ARMv5 only
+  FSR                      0   0   5   0   ALIGN    ARMv4/ARMv5 only
+  DFSR                     0   0   5   0   all      ARMv6 and later
+  IFSR                     0   1   5   0   all      ARMv6 and later
+  ADFSR                    0   0   5   1   all      ARMv7 and later
+  AIFSR                    0   1   5   1   all      ARMv7 and later
+  DAPR                     0   0   5   0   MPU      ARMv4/ARMv5 only
+  IAPR                     0   1   5   0   MPU      ARMv4/ARMv5 only
+  FAR                      0   0   6   0   ALIGN    ARMv4/ARMv5 only
+  DFAR                     0   0   6   0   all      ARMv6 and later
+  WFAR                     0   1   6   0   all
+  IFAR                     0  1/2  6   0   all
+  DMMR0                    0   0   6   0   MPU      ARMv4/ARMv5 only
+  DMMR1                    0   0   6   1   MPU      ARMv4/ARMv5 only
+  DMMR2                    0   0   6   2   MPU      ARMv4/ARMv5 only
+  DMMR3                    0   0   6   3   MPU      ARMv4/ARMv5 only
+  DMMR4                    0   0   6   4   MPU      ARMv4/ARMv5 only
+  DMMR5                    0   0   6   5   MPU      ARMv4/ARMv5 only
+  DMMR6                    0   0   6   6   MPU      ARMv4/ARMv5 only
+  DMMR7                    0   0   6   7   MPU      ARMv4/ARMv5 only
+  IMMR0                    0   1   6   0   MPU      ARMv4/ARMv5 only
+  IMMR1                    0   1   6   1   MPU      ARMv4/ARMv5 only
+  IMMR2                    0   1   6   2   MPU      ARMv4/ARMv5 only
+  IMMR3                    0   1   6   3   MPU      ARMv4/ARMv5 only
+  IMMR4                    0   1   6   4   MPU      ARMv4/ARMv5 only
+  IMMR5                    0   1   6   5   MPU      ARMv4/ARMv5 only
+  IMMR6                    0   1   6   6   MPU      ARMv4/ARMv5 only
+  IMMR7                    0   1   6   7   MPU      ARMv4/ARMv5 only
+  DRBAR                    0   0   6   1   MPU      ARMv6 and later
+  IRBAR                    0   1   6   1   MPU      ARMv6 and later
+  DRSR                     0   2   6   1   MPU      ARMv6 and later
+  IRSR                     0   3   6   1   MPU      ARMv6 and later
+  DRACR                    0   4   6   1   MPU      ARMv6 and later
+  IRACR                    0   5   6   1   MPU      ARMv6 and later
+  RGNR                     0   0   6   2   MPU      ARMv6 and later
+  PAR                      0   0   7   4   all      ARMv7 and later
+  DCLR                     0   0   9   0   all
+  ICLR                     0   1   9   0   all
+  DTCMRR                   0   0   9   1   all
+  ITCMRR                   0   1   9   1   all
+  DTLBLR                   0   0  10   0   MMU      ARMv6 and later
+  ITLBLR                   0   1  10   0   MMU      ARMv6 and later
+  PRRR                     0   0  10   2   all      ARMv6 and later
+  NMRR                     0   1  10   2   all      ARMv6 and later
+  DMAPresent               0   0  11   0   DMA
+  DMAQueued                0   1  11   0   DMA
+  DMARunning               0   2  11   0   DMA
+  DMAInterrupting          0   3  11   0   DMA
+  DMAUserAccessibility     0   0  11   1   DMA
+  DMAChannel               0   0  11   2   DMA
+  DMAControl               0   0  11   4   DMA
+  DMAInternalStart         0   0  11   5   DMA
+  DMAExternalStart         0   0  11   6   DMA
+  DMAInternalEnd           0   0  11   7   DMA
+  DMAStatus                0   0  11   8   DMA
+  DMAContextID             0   0  11  15   DMA
+  FCSEIDR                  0   0  13   0   all
+  CONTEXTIDR               0   1  13   0   all      ARMv6 and later
+  TPIDRURW                 0   2  13   0   all      ARMv6 and later
+  TPIDRURO                 0   3  13   0   all      ARMv6 and later
+  TPIDRPRW                 0   4  13   0   all      ARMv6 and later
+  PCR                      0   0  15   0   all      CortexA9
+  CBAR                     4   0  15   0   all      CortexA9</documentation>
+        </register>
+        <register name="TEECR"
+            width="32"/>
+        <register name="TEEHBR"
+            width="32"/>
+        <register name="JIDR"
+            width="32"/>
+        <register name="JOSCR"
+            width="32"/>
+        <register name="JMCR"
+            width="32"/>
+        <register name="MIDR"
+            width="32"/>
+        <register name="CTR"
+            width="32"/>
+        <register name="TCMTR"
+            width="32"/>
+        <register name="TLBTR"
+            width="32"/>
+        <register name="MPUIR"
+            width="32"/>
+        <register name="MPIDR"
+            width="32"/>
+        <register name="ID_PFR0"
+            width="32"/>
+        <register name="ID_PFR1"
+            width="32"/>
+        <register name="ID_DFR0"
+            width="32"/>
+        <register name="ID_AFR0"
+            width="32"/>
+        <register name="ID_MMFR0"
+            width="32"/>
+        <register name="ID_MMFR1"
+            width="32"/>
+        <register name="ID_MMFR2"
+            width="32"/>
+        <register name="ID_MMFR3"
+            width="32"/>
+        <register name="ID_ISAR0"
+            width="32"/>
+        <register name="ID_ISAR1"
+            width="32"/>
+        <register name="ID_ISAR2"
+            width="32"/>
+        <register name="ID_ISAR3"
+            width="32"/>
+        <register name="ID_ISAR4"
+            width="32"/>
+        <register name="ID_ISAR5"
+            width="32"/>
+        <register name="CCSIDR"
+            width="32"/>
+        <register name="CLIDR"
+            width="32"/>
+        <register name="AIDR"
+            width="32"/>
+        <register name="CSSELR"
+            width="32"/>
+        <register name="SCTLR"
+            width="32"/>
+        <register name="ACTLR"
+            width="32"/>
+        <register name="CPACR"
+            width="32"/>
+        <register name="TTBR"
+            width="32"/>
+        <register name="TTBR0"
+            width="32"/>
+        <register name="TTBR1"
+            width="32"/>
+        <register name="TTBCR"
+            width="32"/>
+        <register name="DCR"
+            width="32"/>
+        <register name="ICR"
+            width="32"/>
+        <register name="DACR"
+            width="32"/>
+        <register name="DBR"
+            width="32"/>
+        <register name="FSR"
+            width="32"/>
+        <register name="DFSR"
+            width="32"/>
+        <register name="IFSR"
+            width="32"/>
+        <register name="ADFSR"
+            width="32"/>
+        <register name="AIFSR"
+            width="32"/>
+        <register name="DAPR"
+            width="32"/>
+        <register name="IAPR"
+            width="32"/>
+        <register name="FAR"
+            width="32"/>
+        <register name="DFAR"
+            width="32"/>
+        <register name="WFAR"
+            width="32"/>
+        <register name="IFAR"
+            width="32"/>
+        <register name="DMMR0"
+            width="32"/>
+        <register name="DMMR1"
+            width="32"/>
+        <register name="DMMR2"
+            width="32"/>
+        <register name="DMMR3"
+            width="32"/>
+        <register name="DMMR4"
+            width="32"/>
+        <register name="DMMR5"
+            width="32"/>
+        <register name="DMMR6"
+            width="32"/>
+        <register name="DMMR7"
+            width="32"/>
+        <register name="IMMR0"
+            width="32"/>
+        <register name="IMMR1"
+            width="32"/>
+        <register name="IMMR2"
+            width="32"/>
+        <register name="IMMR3"
+            width="32"/>
+        <register name="IMMR4"
+            width="32"/>
+        <register name="IMMR5"
+            width="32"/>
+        <register name="IMMR6"
+            width="32"/>
+        <register name="IMMR7"
+            width="32"/>
+        <register name="DRBAR"
+            width="32"/>
+        <register name="IRBAR"
+            width="32"/>
+        <register name="DRSR"
+            width="32"/>
+        <register name="IRSR"
+            width="32"/>
+        <register name="DRACR"
+            width="32"/>
+        <register name="IRACR"
+            width="32"/>
+        <register name="RGNR"
+            width="32"/>
+        <register name="PAR"
+            width="32"/>
+        <register name="DCLR"
+            width="32"/>
+        <register name="ICLR"
+            width="32"/>
+        <register name="DTCMRR"
+            width="32"/>
+        <register name="ITCMRR"
+            width="32"/>
+        <register name="DTLBLR"
+            width="32"/>
+        <register name="ITLBLR"
+            width="32"/>
+        <register name="PRRR"
+            width="32"/>
+        <register name="NMRR"
+            width="32"/>
+        <register name="DMAPresent"
+            width="32"/>
+        <register name="DMAQueued"
+            width="32"/>
+        <register name="DMARunning"
+            width="32"/>
+        <register name="DMAInterrupting"
+            width="32"/>
+        <register name="DMAUserAccessibility"
+            width="32"/>
+        <register name="DMAChannel"
+            width="32"/>
+        <register name="DMAControl"
+            width="32"/>
+        <register name="DMAInternalStart"
+            width="32"/>
+        <register name="DMAExternalStart"
+            width="32"/>
+        <register name="DMAInternalEnd"
+            width="32"/>
+        <register name="DMAStatus"
+            width="32"/>
+        <register name="DMAContextID"
+            width="32"/>
+        <register name="FCSEIDR"
+            width="32"/>
+        <register name="CONTEXTIDR"
+            width="32"/>
+        <register name="TPIDRURW"
+            width="32"/>
+        <register name="TPIDRURO"
+            width="32"/>
+        <register name="TPIDRPRW"
+            width="32"/>
+        <register name="PCR"
+            width="32"/>
+        <register name="CBAR"
+            width="32"/>
+        <register name="FPSID"
+            width="32"/>
+        <register name="MVFR0"
+            width="32"/>
+        <register name="MVFR1"
+            width="32"/>
+        <register name="FPEXC"
+            width="32"/>
+    </registers>
+    <fileversion major="1"
+        minor="0"
+        name="_version_0"/>
+ </processor>

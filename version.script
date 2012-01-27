@@ -1,0 +1,7 @@
+{
+  global:
+    vmiStubs;
+    modelAttrs;
+
+  local: *;
+};

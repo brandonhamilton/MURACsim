@@ -1,0 +1,46 @@
+   ___  ____   _______  ___  _____ 
+   |  \/  | | | | ___ \/ _ \/  __ \
+   | .  . | | | | |_/ / /_\ \ /  \/
+   | |\/| | | | |    /|  _  | |    
+   | |  | | |_| | |\ \| | | | \__/\
+   \_|  |_/\___/\_| \_\_| |_/\____/
+                                
+   MURAC Functional Simulator Platform
+
+   Author: Brandon Kyle Hamilton
+
+INTRODUCTION -------------------------------------------------------
+   This repository contains the MURAC architecture sample 
+   implementation simulator (SystemC TLM 2.0)
+
+   This sample executes a multi-architecture application on a sample
+   MURAC system. The Heterogeneous platform contains multiple 
+   processors implementing different ISAs connected with a shared 
+   memory.
+
+PREREQUISITES ------------------------------------------------------
+   This simulator requires 
+   1. Open Virtual Platforms (OVP) OVPsim simulator 
+      http://www.ovpworld.org/
+   2. SystemC and SystemC TLM 2.0
+      http://www.accellera.org/downloads/standards/systemc
+      
+FILES --------------------------------------------------------------
+   There are three parts to the sample platform
+   1. Example applications; these are found in the examples directory
+   2. The MORAC Simulator; this is found as platform/morac_sim.c
+   3. A makefile to build 1 and 2; this is found as Makefile
+
+BUILDING THE SIMULATION --------------------------------------------
+   To build the simulator and all examples
+
+   > make
+
+   To build only the examples
+
+   > make examples
+
+RUNNING THE EXAMPLES -----------------------------------------------
+
+   > ./morac_sim example/simple/pa/simple.ARM7.elf \
+        example/simple/aa/simple_lib.so
