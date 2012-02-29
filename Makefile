@@ -334,7 +334,7 @@ endif
 #
 ifeq ($(MAKEPASS),4)
 
-EXAMPLES      := simple matrix_multiply aes128 seqalign
+EXAMPLES      := simple matrix_multiply aes128 seqalign mem_access
 EXAMPLE_DIRS  := $(addprefix example/,$(EXAMPLES))
 
 all:
