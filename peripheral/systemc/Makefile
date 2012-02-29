@@ -1,5 +1,5 @@
 #
-# MORAC Auxiliary Architecture test platform Makefile
+# MURAC Auxiliary Architecture test platform Makefile
 # Author: Brandon Hamilton <brandon.hamilton@gmail.com>
 
 
@@ -34,7 +34,7 @@ clean:
 build_dir:
 	$(V) mkdir -p build
 
-test_platform: build/testPlatform.o build/moracAA.o
+test_platform: build/testPlatform.o build/muracAA.o
 	$(V) echo "Linking platform (TLM 2.0 test platform) $@"
 	$(V) $(CPP) -o $@  $^ $(CPPFLAGS) $(TLM_CFLAGS) $(TLM_LDFLAGS) $(INTEGRATOR_LDFLAGS)
 
@@ -42,14 +42,14 @@ build/testPlatform.o: testPlatform.cpp
 	$(V) echo "Compiling platform (TLM 2.0 test platform) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(TLM_CFLAGS)
 
-build/moracAA.o: moracAA.cpp
+build/muracAA.o: muracAA.cpp
 	$(V) echo "Compiling platform (TLM 2.0 test platform) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(INTEGRATOR_CPPFLAGS) $(TLM_CFLAGS)
 
 %.o: %.cpp
-	$(V) echo "Compiling Morac AA integrator $@"
+	$(V) echo "Compiling Murac AA integrator $@"
 	$(V) $(CPP) $(CPPFLAGS) $(TLM_CFLAGS) -c -o $@ $^
 
 $(INTEGRATOR_LIBS): $(INTEGRATOR_OBJS)
-	$(V) echo "Linking Morac AA integrator libraries"
+	$(V) echo "Linking Murac AA integrator libraries"
 	$(V) $(CPP) -shared -o $@ $^ $(LDFLAGS)

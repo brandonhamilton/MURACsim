@@ -1,5 +1,5 @@
 /**
- * MORAC Test Application - Smith-Waterman Sequence Alignment
+ * MURAC Test Application - Smith-Waterman Sequence Alignment
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  *
  */
@@ -10,7 +10,7 @@
 
 
 #include "../aa/embed/seqalign.h"
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 void printdata(const char *data) {
     for (int i = 0; i < 16; i++) {
@@ -20,7 +20,7 @@ void printdata(const char *data) {
 }
 int main(void) {
 
-    printf("Sequence Aligment example...\n");
+    printf("[PA] Sequence Aligment example...\n");
     
     unsigned char *input = (unsigned char*) malloc(4);
     unsigned char *output = (unsigned char*) malloc(1);
@@ -29,14 +29,14 @@ int main(void) {
     vars[0] = (unsigned int) input;
     vars[1] = (unsigned int) output;
 
-    MORAC_SET_PTR(vars);
+    MURAC_SET_PTR(vars);
 
     EXECUTE_SEQALIGN
     
-    printf("Sequence Alignment result: ");
+    printf("[PA] Sequence Alignment result: ");
     printf(*output > 0 ? "MATCH\n" : "NO MATCH\n");
    // printdata(encrypt_output);
-    printf("Example finished...\n");
+    printf("[PA] Example finished...\n");
 
     free(input);
     free(output);

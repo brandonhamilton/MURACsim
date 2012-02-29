@@ -1,5 +1,5 @@
 /**
- * Morac Auxilliary Architecture integration framework
+ * Murac Auxilliary Architecture integration framework
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  */
 
@@ -7,26 +7,26 @@
 #include <dlfcn.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-#include "moracAA.hpp"
+#include "muracAA.hpp"
 
 
-typedef int (*morac_init_func)(BusInterface*);
-typedef int (*morac_exec_func)(unsigned long int);
+typedef int (*murac_init_func)(BusInterface*);
+typedef int (*murac_exec_func)(unsigned long int);
 
 using std::cout;
 using std::endl;
 using std::dec;
 using std::hex;
 
-SC_HAS_PROCESS( moracAA );
+SC_HAS_PROCESS( muracAA );
 
-moracAAInterupt::moracAAInterupt(const char *name, moracAA *aa):
+muracAAInterupt::muracAAInterupt(const char *name, muracAA *aa):
   m_aa(aa),
   m_name(name) {
   
 }
 
-void moracAAInterupt::write(const int &value) {
+void muracAAInterupt::write(const int &value) {
     if (value == 1) {
         m_aa->onBrArch(value);
     }
@@ -35,27 +35,27 @@ void moracAAInterupt::write(const int &value) {
 /** 
  * Constructor
  */
-moracAA::moracAA( sc_core::sc_module_name  name) :
+muracAA::muracAA( sc_core::sc_module_name  name) :
   sc_module( name ),
   brarch("brarch", this) {
   
 }
 
-int moracAA::loadLibrary(const char *library) {
-    cout << "Loading morac library: " << library << endl;
+int muracAA::loadLibrary(const char *library) {
+    cout << "Loading murac library: " << library << endl;
     void* handle = dlopen(library, RTLD_NOW | RTLD_GLOBAL); 
     if (!handle) {
       cout << dlerror() << endl;
       return -1;
     }
     dlerror();
-    cout << "Initializing morac library: " << library << endl;
-    morac_init_func m_init = (morac_init_func) dlsym(handle, "morac_init");
+    cout << "Initializing murac library: " << library << endl;
+    murac_init_func m_init = (murac_init_func) dlsym(handle, "murac_init");
     int result = m_init(this);
     return result;
 }
 
-int moracAA::invokePluginSimulation(const char* path, unsigned long int ptr) {
+int muracAA::invokePluginSimulation(const char* path, unsigned long int ptr) {
     char *error;
     void* handle = dlopen(path, RTLD_LAZY | RTLD_GLOBAL); 
     if (!handle) {
@@ -65,7 +65,7 @@ int moracAA::invokePluginSimulation(const char* path, unsigned long int ptr) {
 
     dlerror();
 
-    morac_exec_func m_exec = (morac_exec_func) dlsym(handle, "morac_execute");
+    murac_exec_func m_exec = (murac_exec_func) dlsym(handle, "murac_execute");
     if ((error = dlerror()) != NULL) {
       fprintf(stderr, "%s\n", error);
       return -1;
@@ -84,7 +84,7 @@ int moracAA::invokePluginSimulation(const char* path, unsigned long int ptr) {
 /**
  * Handle the BrArch interrupt from the PA
  */
-void moracAA::onBrArch(const int &value) {
+void muracAA::onBrArch(const int &value) {
     cout << "@" << sc_time_stamp() << " onBrArch" << endl;
 
     int ret = -1;
@@ -93,22 +93,22 @@ void moracAA::onBrArch(const int &value) {
     unsigned int instruction_size = 0;
     unsigned long int ptr = 0;
     unsigned char* fmap;
-    char *tmp_file_name = strdup("/tmp/morac_AA_XXXXXX");
+    char *tmp_file_name = strdup("/tmp/murac_AA_XXXXXX");
 
-    if (busRead(MORAC_PC_ADDRESS, (unsigned char*) &pc, 4) < 0) {
+    if (busRead(MURAC_PC_ADDRESS, (unsigned char*) &pc, 4) < 0) {
       cout << "@" << sc_time_stamp() << " Memory read error !" << endl;
       goto trigger_return_interrupt;
     }
 
     cout << "@" << sc_time_stamp() << " PC: 0x" << hex << pc << endl;
 
-    if (busRead(MORAC_PC_ADDRESS + 4, (unsigned char*) &instruction_size, 4) < 0) {
+    if (busRead(MURAC_PC_ADDRESS + 4, (unsigned char*) &instruction_size, 4) < 0) {
       cout << "@" << sc_time_stamp() << " Memory read error !" << endl;
       goto trigger_return_interrupt;
     }
     cout << "@" << sc_time_stamp() << " Instruction size: " << dec << instruction_size << endl;
 
-    if (busRead(MORAC_PC_ADDRESS + 8, (unsigned char*) &ptr, 4) < 0) {
+    if (busRead(MURAC_PC_ADDRESS + 8, (unsigned char*) &ptr, 4) < 0) {
       cout << "@" << sc_time_stamp() << " Memory read error !" << endl;
       goto trigger_return_interrupt;
     }
@@ -157,7 +157,7 @@ void moracAA::onBrArch(const int &value) {
 
     close(fd);
 
-    cout << "@" << sc_time_stamp() << " Running morac AA simulation " << endl;
+    cout << "@" << sc_time_stamp() << " Running murac AA simulation " << endl;
     ret = invokePluginSimulation(tmp_file_name, ptr);
     cout << "@" << sc_time_stamp() << " Simulation result = " << ret << endl;
 
@@ -177,7 +177,7 @@ void moracAA::onBrArch(const int &value) {
 /**
  * Read from the bus
  */
-int moracAA::busRead (unsigned long int  addr,
+int muracAA::busRead (unsigned long int  addr,
                       unsigned char      rdata[],
                       int                dataLen) {
 
@@ -197,7 +197,7 @@ int moracAA::busRead (unsigned long int  addr,
 /**
  * Write to the bus
  */
-int moracAA::busWrite (unsigned long int  addr,
+int muracAA::busWrite (unsigned long int  addr,
                        unsigned char      wdata[],
                        int                dataLen) {
 
@@ -217,16 +217,16 @@ int moracAA::busWrite (unsigned long int  addr,
 /**
  * Initiate bus transfer
  */
-void moracAA::busTransfer( tlm::tlm_generic_payload &trans ) {
+void muracAA::busTransfer( tlm::tlm_generic_payload &trans ) {
     sc_core::sc_time dummyDelay = sc_core::SC_ZERO_TIME;
     aa_bus->b_transport( trans, dummyDelay );
 }
 
 
-int moracAA::read(unsigned long int addr, unsigned char*data, unsigned int len) {
+int muracAA::read(unsigned long int addr, unsigned char*data, unsigned int len) {
     return busRead(addr, data, len);
 }
 
-int moracAA::write(unsigned long int addr, unsigned char*data, unsigned int len) {
+int muracAA::write(unsigned long int addr, unsigned char*data, unsigned int len) {
     return busWrite(addr, data, len);  
 }

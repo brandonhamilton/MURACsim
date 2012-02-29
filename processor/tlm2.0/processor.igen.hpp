@@ -1,14 +1,14 @@
 /**
- * MORAC processor generator
+ * MURAC processor generator
  * Author: Brandon Hamilton
  */
 
-#ifndef PROCESSOR_MORAC_ARM_1_0
-#define PROCESSOR_MORAC_ARM_1_0
+#ifndef PROCESSOR_MURAC_ARM_1_0
+#define PROCESSOR_MURAC_ARM_1_0
 #include "ovpworld.org/modelSupport/tlmProcessor/1.0/tlm2.0/tlmProcessor.hpp"
 using namespace sc_core;
 
-class morac_arm : public icmCpu
+class murac_arm : public icmCpu
 {
   private:
     const char *getModel() {
@@ -30,7 +30,7 @@ class morac_arm : public icmCpu
     icmCpuOutputNetPort  nDMAIRQ;
     icmCpuOutputNetPort  brarch;
 
-    morac_arm(
+    murac_arm(
         sc_module_name        name,
         const unsigned int    ID,
         const char           *model_file,
@@ -38,7 +38,7 @@ class morac_arm : public icmCpu
         icmAttrListObject    *attrList = NULL,
         const char           *semiHost = NULL
      )
-    : icmCpu(name, ID, "morac_arm", model_file ? model_file : getModel(), "modelAttrs", semiHost ? semiHost : getSHL(), attrs, attrList)
+    : icmCpu(name, ID, "murac_arm", model_file ? model_file : getModel(), "modelAttrs", semiHost ? semiHost : getSHL(), attrs, attrList)
     , INSTRUCTION (this, "INSTRUCTION", 32)
     , DATA (this, "DATA", 32)
     , fiq("fiq", this)

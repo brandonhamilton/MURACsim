@@ -169,7 +169,7 @@ const armMorphAttr armMorphTable[ARM_IT_LAST+1] = {
     MORPH_SET_BLX2 (BX,   False),
     MORPH_SET_BLX2 (BXJ,  False),
 
-    // MORAC instructions
+    // MURAC instructions
     MORPH_SET_BAA (BAA,  True),
 
     // miscellaneous instructions

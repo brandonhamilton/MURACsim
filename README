@@ -28,7 +28,7 @@ PREREQUISITES ------------------------------------------------------
 FILES --------------------------------------------------------------
    There are three parts to the sample platform
    1. Example applications; these are found in the examples directory
-   2. The MORAC Simulator; this is found as platform/morac_sim.c
+   2. The MURAC Simulator; this is found as platform/murac_sim.c
    3. A makefile to build 1 and 2; this is found as Makefile
 
 BUILDING THE SIMULATION --------------------------------------------
@@ -42,5 +42,5 @@ BUILDING THE SIMULATION --------------------------------------------
 
 RUNNING THE EXAMPLES -----------------------------------------------
 
-   > ./morac_sim example/simple/pa/simple.ARM7.elf \
+   > ./murac_sim example/simple/pa/simple.ARM7.elf \
         example/simple/aa/simple_lib.so

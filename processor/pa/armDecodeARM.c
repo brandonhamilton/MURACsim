@@ -418,7 +418,7 @@ const static opAttrs attrsArray[ARM_IT_LAST+1] = {
     ATTR_SET_BLX2 (BX,   ARM_BX, ARM_ISAR_BX,  "bx" ),
     ATTR_SET_BLX2 (BXJ,  ARM_J,  ARM_ISAR_BXJ, "bxj"),
 
-    // MORAC instructions
+    // MURAC instructions
     ATTR_SET_BLX2 (BAA,  ARM_BAA,  ARM_ISAR_BAA, "baa"),
 
     // miscellaneous instructions
@@ -992,7 +992,7 @@ static vmidDecodeTableP createDecodeTableARM(void) {
         DECODE_SET_BLX2 (BX,   "0001"),
         DECODE_SET_BLX2 (BXJ,  "0010"),
 
-        // MORAC instructions
+        // MURAC instructions
         DECODE_SET_BLX2 (BAA,  "0100"),
 
         // miscellaneous instructions

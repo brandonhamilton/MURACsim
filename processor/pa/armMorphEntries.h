@@ -119,7 +119,7 @@
     [ARM_IT_##_NAME] = {morphCB:armEmitBranchR, isLink:_IS_LINK}
 
 //
-// Morpher attributes for MORAC instructions like BAA
+// Morpher attributes for MURAC instructions like BAA
 //
 #define MORPH_SET_BAA(_NAME, _IS_LINK) \
     [ARM_IT_##_NAME] = {morphCB:armEmitBAA, isLink:_IS_LINK}

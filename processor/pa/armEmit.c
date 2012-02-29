@@ -49,7 +49,7 @@
 #include "armSIMDVFP.h"
 #include "armRegisters.h"
 #include "armUtils.h"
-#include "armMorac.h"
+#include "armMurac.h"
 
 //
 // Prefix for messages from this module
@@ -1316,15 +1316,15 @@ void armEmitBrArch(void) {
     vmimtMoveRSimPC(32, ARM_REG(2));
     vmimtBinopRC(32, vmi_ADD, ARM_REG(2), 4, 0);
 
-    vmimtMoveRC(32, ARM_REG(3), MORAC_PC_ADDRESS);
+    vmimtMoveRC(32, ARM_REG(3), MURAC_PC_ADDRESS);
     vmimtStoreRRO(32, 0, ARM_REG(3), ARM_REG(2), MEM_ENDIAN_LITTLE, True);
 
     // Write the AA instruction block size to shared memory
-    vmimtMoveRC(32, ARM_REG(3), MORAC_PC_ADDRESS + 4);
+    vmimtMoveRC(32, ARM_REG(3), MURAC_PC_ADDRESS + 4);
     vmimtStoreRRO(32, 0, ARM_REG(3), ARM_REG(1), MEM_ENDIAN_LITTLE, True);
 
     // Write the stack poitner passed to AA to shared memory
-    vmimtMoveRC(32, ARM_REG(3), MORAC_PC_ADDRESS + 8);
+    vmimtMoveRC(32, ARM_REG(3), MURAC_PC_ADDRESS + 8);
     vmimtStoreRRO(32, 0, ARM_REG(3), ARM_REG(0), MEM_ENDIAN_LITTLE, True);
 
     // Halt the processor

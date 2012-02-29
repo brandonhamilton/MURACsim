@@ -45,7 +45,7 @@ typedef enum armArchitectureE {
     ARM_VD2 = 0x0080,       // enable LDRD, MCRR, MRRC, PLD and STRD insns
     ARM_SS  = 0x0100,       // enable supersections, TEX and S bits
     ARM_BX  = 0x0200,       // enable BX instruction
-    ARM_BAA = 0x0200,       // enable MORAC BAA instruction
+    ARM_BAA = 0x0200,       // enable MURAC BAA instruction
     ARM_J   = 0x0400,       // enable trivial Jazelle extension
     ARM_K   = 0x0800,       // enable multi-processing instructions
     ARM_VT2 = 0x1000,       // enable Thumb-2 instructions

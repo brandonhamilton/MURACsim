@@ -1580,7 +1580,7 @@ ARM_MORPH_FN(armEmitBLX) {
 }
 
 //
-// Emit code for MORAC BAA instruction
+// Emit code for MURAC BAA instruction
 //
 ARM_MORPH_FN(armEmitBAA) {
     // emit the BrArch instruction
@@ -8770,7 +8770,7 @@ static Bool supportedByISAR(armP arm, armMorphStateP state) {
             case ARM_ISAR_BLX:
                 return ARM_ISAR(1, Interwork_instrs)>1;
             case ARM_ISAR_BAA:
-                return ARM_ISAR(1, Morac_instrs);
+                return ARM_ISAR(1, Murac_instrs);
             case ARM_ISAR_MOVT:
                 return ARM_ISAR(1, Immediate_instrs);
             case ARM_ISAR_IT:

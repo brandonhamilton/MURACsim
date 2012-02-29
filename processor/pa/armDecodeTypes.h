@@ -317,7 +317,7 @@ typedef enum armInstructionTypeE {
     ITYPE_SINGLE (BX  ),
     ITYPE_SINGLE (BXJ ),
 
-    // MORAC instructions
+    // MURAC instructions
     ITYPE_SINGLE (BAA ),
 
     // miscellaneous instructions
@@ -1065,7 +1065,7 @@ typedef enum armISARSupportE {
     ARM_ISAR_BXJ,       // BXJ support
     ARM_ISAR_BX,        // BX support
     ARM_ISAR_BLX,       // BX support
-    ARM_ISAR_BAA,       // MORAC BAA support
+    ARM_ISAR_BAA,       // MURAC BAA support
     ARM_ISAR_MOVT,      // MOVT/MOV(16)/ADD(12) etc support
     ARM_ISAR_IT,        // IT support
     ARM_ISAR_SXTB,      // SXTB/SXTH/UXTB/UXTH support

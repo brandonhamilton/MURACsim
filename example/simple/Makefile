@@ -1,5 +1,5 @@
 #
-# MORAC Simple example Makefile
+# MURAC Simple example Makefile
 # Author: Brandon Hamilton <brandon.hamilton@gmail.com>
 
 ######## TLM Support ############
@@ -14,7 +14,7 @@ IMPERAS_LIB     = $(IMPERAS_HOME)/bin/$(IMPERAS_ARCH)
 SYSTEMC_INC     = $(SYSTEMC_HOME)/include
 SYSTEMC_LIB_DIR = $(SYSTEMC_HOME)/lib-linux
 
-TLM_MORAC		= peripheral/systemc
+TLM_MURAC		= peripheral/systemc
 
 CFLAGS = $(SIM_CFLAGS) $(OTHER_CFLAGS)
 LDFLAGS = $(OTHER_LDFLAGS)
@@ -35,7 +35,7 @@ CPPFLAGS  = -g -Wno-long-long -Wall -DSC_INCLUDE_DYNAMIC_PROCESSES -D_CRT_SECURE
 
 BUILD_FULL_CPU_MODEL=1
 
-MORAC_EMBED_TOOL = morac_embed
+MURAC_EMBED_TOOL = murac_embed
 
 PA_CROSS=ARM7
 PA_SRC=$(wildcard pa/*.cpp)
@@ -54,26 +54,26 @@ AA_EMBED = aa/simple.so
 #
 # Build the framework tools
 #
-all: $(MORAC_EMBED_TOOL) $(AA_EMBED_DIR) $(AA_LIB) $(AA_EMBED) $(PA_FILES)
+all: $(MURAC_EMBED_TOOL) $(AA_EMBED_DIR) $(AA_LIB) $(AA_EMBED) $(PA_FILES)
 
-$(MORAC_EMBED_TOOL): ../../framework/morac_embed.c
-	$(V) $(CC) -o morac_embed ../../framework/morac_embed.c
+$(MURAC_EMBED_TOOL): ../../framework/murac_embed.c
+	$(V) $(CC) -o murac_embed ../../framework/murac_embed.c
 
 $(AA_EMBED_DIR):
 	- $(V) mkdir -p $(AA_EMBED_DIR) > /dev/null
 
 %.o: %.cpp
-	$(V) echo "Compiling Morac AA integrator $@"
+	$(V) echo "Compiling Murac AA integrator $@"
 	$(V) $(CPP) -fPIC -Os -c -o $@ $^ -I$(SYSTEMC_INC)
 
 $(AA_LIB): $(AA_LIB_OBJS)
-	$(V) echo "Linking Morac AA integrator libraries"
+	$(V) echo "Linking Murac AA integrator libraries"
 	$(V) $(CPP) -shared --no-undefined -o $@ $^ -L$(SYSTEMC_LIB_DIR) -lsystemc
 
 $(AA_EMBED): $(AA_EMBED_OBJS)
-	$(V) echo "Linking Morac AA integrator libraries"
+	$(V) echo "Linking Murac AA integrator libraries"
 	$(V) $(CPP) -shared --no-undefined -o $@ $^
-	$(V) ./$(MORAC_EMBED_TOOL) $@ $(AA_EMBED_DIR)
+	$(V) ./$(MURAC_EMBED_TOOL) $@ $(AA_EMBED_DIR)
 
 -include $(IMPERAS_HOME)/bin/Makefile.include
 -include $(IMPERAS_LIB)/CrossCompiler/$(PA_CROSS).makefile.include
@@ -90,7 +90,7 @@ endif
 	$(V) $($(PA_CROSS)_CC) -c -o $@ $< $(OPTIMISATION)
 
 clean:
-	$(V) - rm -f $(MORAC_EMBED_TOOL)
-	$(V) - rm -f $(AA_OBJS) $(AA_LIB)
+	$(V) - rm -f $(MURAC_EMBED_TOOL)
+	$(V) - rm -f $(AA_OBJS) $(AA_LIB) $(AA_EMBED) $(AA_EMBED_OBJS)
 	$(V) - rm -rf $(AA_EMBED_DIR)
 	$(V) - rm -f pa/*.$(PA_CROSS).elf pa/*.$(PA_CROSS).o

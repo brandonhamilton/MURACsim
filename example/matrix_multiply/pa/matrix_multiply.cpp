@@ -1,5 +1,5 @@
 /**
- * MORAC Test Application
+ * MURAC Test Application
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  *
  */
@@ -9,13 +9,13 @@
 #include <string.h>
 
 #include "../aa/embed/matrix_multiply.h"
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 #define N 3
 
 int main(void) {
 
-    printf("Matrix multiplication example...\n");
+    printf("[PA] Matrix multiplication example...\n");
     
     int *m1 = (int *) malloc(N*N*sizeof(int));//0xCF0FF000;//
     int *m2 = (int *) malloc(N*N*sizeof(int));//0xCF0FF024;//malloc(N*N*sizeof(int));
@@ -32,7 +32,7 @@ int main(void) {
         m2[i] = N - i;
     }
 
-    MORAC_SET_PTR(stack)
+    MURAC_SET_PTR(stack)
 
     EXECUTE_MATRIX_MULTIPLY
 

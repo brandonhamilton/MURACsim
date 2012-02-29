@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
     icmInit(ICM_VERBOSE | ICM_STOP_ON_CTRLC | ICM_ENABLE_IMPERAS_INTERCEPTS, NULL, 0);
 
     /***************************************************************************************************
-       MORAC Primary Architecture
+       MURAC Primary Architecture
          - ARM processor
      ***************************************************************************************************/
 #ifdef INTECEPT_OBJECT_SUPPORTED
@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
         armModel,            // model file
 #else
 
-        MORAC_PA_MODEL_FILE, // model file
+        MURAC_PA_MODEL_FILE, // model file
 #endif
         "modelAttrs",        // model attributes
         SIMULATION_FLAGS,    // simulation flags
@@ -64,8 +64,8 @@ int main(int argc, char **argv) {
     );
 
 #ifdef INTECEPT_OBJECT_SUPPORTED
-    // Add intercept libarary for MORAC Primary Architecture instructions
-    icmAddInterceptObject(pa, "morac_pa", MORAC_PA_INSTRUCTIONS_FILE, "modelAttrs", 0);
+    // Add intercept libarary for MURAC Primary Architecture instructions
+    icmAddInterceptObject(pa, "murac_pa", MURAC_PA_INSTRUCTIONS_FILE, "modelAttrs", 0);
 #endif
 
     /***************************************************************************************************
@@ -103,17 +103,17 @@ int main(int argc, char **argv) {
     icmConnectMemoryToBus(busAA, "aa_pr_state_memory_port", prStateMemory, 0xcf000000);
 
     /***************************************************************************************************
-       MORAC Peripherals (Auxiliary Architecture)
+       MURAC Peripherals (Auxiliary Architecture)
      ***************************************************************************************************/
     icmAttrListP fpgaAttrs = icmNewAttrList();
     if(finishOnSoftReset) {
         icmAddUns64Attr(fpgaAttrs, "stoponsoftreset",  1);
     }
-    icmPseP moracFpga = icmNewPSE("moracFpga", MORAC_AA_FPGA_PSE_FILE, fpgaAttrs, 0, 0);
+    icmPseP muracFpga = icmNewPSE("muracFpga", MURAC_AA_FPGA_PSE_FILE, fpgaAttrs, 0, 0);
 
     // Connect memory access ports to the bus
-    icmConnectPSEBus(moracFpga, busAA, "fpga_memread", True, 0x00000000, 0xffffffff);
-    icmConnectPSEBus(moracFpga, busAA, "fpga_memwrite", True, 0x00000000, 0xffffffff);
+    icmConnectPSEBus(muracFpga, busAA, "fpga_memread", True, 0x00000000, 0xffffffff);
+    icmConnectPSEBus(muracFpga, busAA, "fpga_memwrite", True, 0x00000000, 0xffffffff);
     
     /***************************************************************************************************
        System Interrupt connections
@@ -124,12 +124,12 @@ int main(int argc, char **argv) {
     // connect the processor interrupt port to the net
     icmConnectProcessorNet(pa, intBrArch, "brarch", ICM_OUTPUT);
     // connect the FPGA interrupt port to the net
-    icmConnectPSENet(moracFpga, intBrArch, "fpga_brarch", ICM_INPUT);
+    icmConnectPSENet(muracFpga, intBrArch, "fpga_brarch", ICM_INPUT);
 
     // connect the processor interrupt port to the net
     icmConnectProcessorNet(pa, intRetArch, "fiq", ICM_INPUT);
     // connect the FPGA interrupt port to the net
-    icmConnectPSENet(moracFpga, intRetArch, "fpga_retarch", ICM_OUTPUT);
+    icmConnectPSENet(muracFpga, intRetArch, "fpga_retarch", ICM_OUTPUT);
 
     /***************************************************************************************************
        Information
@@ -145,7 +145,7 @@ int main(int argc, char **argv) {
     icmPrintf("\n");
 
     /***************************************************************************************************
-       MORAC Simulation
+       MURAC Simulation
      ***************************************************************************************************/
 
     // Load the application code into the primary architecture memory
@@ -154,11 +154,11 @@ int main(int argc, char **argv) {
     // Run the simulation until done (no instruction limit)
     icmProcessorP final = icmSimulatePlatform();
     if ( final && (icmGetStopReason(final) == ICM_SR_INTERRUPT ) ) {
-        icmPrintf("*** MORAC simulation interrupted\n");
+        icmPrintf("*** MURAC simulation interrupted\n");
     }
 
     // report the total number of instructions executed
-    icmPrintf("MORAC Primary Architecture has executed " FMT_64u " instructions\n", icmGetProcessorICount(pa));
+    icmPrintf("MURAC Primary Architecture has executed " FMT_64u " instructions\n", icmGetProcessorICount(pa));
 
     icmTerminate();
     

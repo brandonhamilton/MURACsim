@@ -1,12 +1,12 @@
 /**
- * MORAC
+ * MURAC
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  */
 
 #include "vmi/vmiMessage.h"
 #include "vmi/vmiRt.h"
 
-#include "armMorac.h"
+#include "armMurac.h"
 #include "stdio.h"
 
 void vmic_branchAuxiliaryArchitecture(armP arm, Uns32 aa_block_size) {

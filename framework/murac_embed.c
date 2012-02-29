@@ -1,3 +1,8 @@
+/**
+ * MURAC software framework
+ * 
+ * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
+ */
 #include <stdio.h>
 
 //#define DEBUG 1
@@ -127,7 +132,7 @@ int main(int argc, char* argv[]) {
 #ifdef DEBUG
     printf("Writing file header...");
 #endif
-    fprintf(file, "/**\n * Morac framework\n * \n * Header file for '%s'\n * Author: Brandon Hamilton <brandon.hamilton@gmail.com>\n */\n\n", aa_name);
+    fprintf(file, "/**\n * Murac software framework\n * \n * Header file for '%s'\n * Author: Brandon Hamilton <brandon.hamilton@gmail.com>\n */\n\n", aa_name);
     convertCase(aa_name);
     fprintf(file, "#ifndef %s_H\n#define %s_H\n\n", aa_name, aa_name);
     fprintf(file, "#define EXECUTE_%s int _lib_length = %d;\\\n", aa_name, fileLen);

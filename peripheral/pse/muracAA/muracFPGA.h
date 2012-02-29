@@ -1,10 +1,10 @@
 /**
- * Morac FPGA peripheral
+ * Murac FPGA peripheral
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  */
 
-#ifndef MORACFPGA_H
-#define MORACFPGA_H
+#ifndef MURACFPGA_H
+#define MURACFPGA_H
 
 extern Uns32 diagnosticLevel;
 
@@ -15,7 +15,7 @@ extern Uns32 diagnosticLevel;
  */
 
 #define THREAD_STACK      (8*1024)
-#define MORAC_PC_ADDRESS 0xcf000000
+#define MURAC_PC_ADDRESS 0xcf000000
 
 typedef struct {
 	char  name[128]; // Device description    
@@ -29,6 +29,6 @@ typedef struct {
     Bool                  busy;
     char                  stack[THREAD_STACK];
 
-} MoracFPGAState;
+} MuracFPGAState;
 
 #endif

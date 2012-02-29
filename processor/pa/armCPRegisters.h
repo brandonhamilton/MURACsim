@@ -653,7 +653,7 @@ typedef struct {
     Uns32 Immediate_instrs : 4;
     Uns32 Interwork_instrs : 4;
     Uns32 Jazelle_instrs   : 4;
-    Uns32 Morac_instrs     : 4;
+    Uns32 Murac_instrs     : 4;
 } CP_REG_STRUCT_DECL(ID_ISAR1);
 
 #define CP_WRITE_MASK_ID_ISAR1 0x00000000

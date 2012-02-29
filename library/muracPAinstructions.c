@@ -50,7 +50,7 @@ typedef struct vmiosObjectS {
 //
 // Primary Architecture instruction type enumeration
 //
-typedef enum armMORACInstrTypeE {
+typedef enum armMURACInstrTypeE {
 
     // Branch Architecture instruction
     ARM_MPA_BAA,
@@ -58,10 +58,10 @@ typedef enum armMORACInstrTypeE {
     // KEEP LAST: for sizing the array
     ARM_MPA_LAST
 
-} armMORACInstrType;
+} armMURACInstrType;
 
 //
-// Create the MORAC PA decode table
+// Create the MURAC PA decode table
 //
 static vmidDecodeTableP createDecodeTable(void) {
 
@@ -90,9 +90,9 @@ static VMIOS_INTERCEPT_FN(doBrArch) {
 //
 // Morpher callback implementing Primary Architecture instructions
 //
-static VMIOS_MORPH_FN(moracPAMorph) {
+static VMIOS_MORPH_FN(muracPAMorph) {
     Uns32             instruction = vmicxtFetch4Byte(processor, thisPC);
-    armMORACInstrType type        = vmidDecode(object->table, instruction);
+    armMURACInstrType type        = vmidDecode(object->table, instruction);
 
     if ( type == ARM_MPA_BAA ) {
         // Handle the BAA instruction
@@ -107,9 +107,9 @@ static VMIOS_MORPH_FN(moracPAMorph) {
 //
 // Return instruction address after passed program counter
 //
-static VMIOS_NEXT_PC_FN(moracPANextPC) {
+static VMIOS_NEXT_PC_FN(muracPANextPC) {
     Uns32             instruction = vmicxtFetch4Byte(processor, thisPC);
-    armMORACInstrType type        = vmidDecode(object->table, instruction);
+    armMURACInstrType type        = vmidDecode(object->table, instruction);
 
     if ( type == ARM_MPA_BAA ) {
         *nextPC = thisPC + 4;
@@ -122,9 +122,9 @@ static VMIOS_NEXT_PC_FN(moracPANextPC) {
 //
 // Disassembler callback disassembling Primary Architecture instructions
 //
-static VMIOS_DISASSEMBLE_FN(moracPADisassemble) {
+static VMIOS_DISASSEMBLE_FN(muracPADisassemble) {
     Uns32             instruction = vmicxtFetch4Byte(processor, thisPC);
-    armMORACInstrType type        = vmidDecode(object->table, instruction);
+    armMURACInstrType type        = vmidDecode(object->table, instruction);
 
     if ( type == ARM_MPA_BAA ) {
         // instruction is BranchArchitexture
@@ -150,7 +150,7 @@ vmiosAttr modelAttrs = {
 
     VMI_VERSION,            // version string (THIS MUST BE FIRST)
     VMI_INTERCEPT_LIBRARY,  // model type
-    "morac_pa",             // description
+    "murac_pa",             // description
     sizeof(vmiosObject),    // size in bytes of OSS object
 
     ////////////////////////////////////////////////////////////////////////
@@ -164,9 +164,9 @@ vmiosAttr modelAttrs = {
     // INSTRUCTION INTERCEPT ROUTINES
     ////////////////////////////////////////////////////////////////////////
 
-    moracPAMorph,          // morph callback
-    moracPANextPC,         // get next instruction address
-    moracPADisassemble,    // disassemble instruction
+    muracPAMorph,          // morph callback
+    muracPANextPC,         // get next instruction address
+    muracPADisassemble,    // disassemble instruction
 
     ////////////////////////////////////////////////////////////////////////
     // ADDRESS INTERCEPT DEFINITIONS

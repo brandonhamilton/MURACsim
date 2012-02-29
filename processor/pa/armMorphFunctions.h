@@ -77,7 +77,7 @@ ARM_MORPH_FN(armEmitBranchC);
 ARM_MORPH_FN(armEmitBranchR);
 ARM_MORPH_FN(armEmitBLX);
 
-// MORAC instructions
+// MURAC instructions
 ARM_MORPH_FN(armEmitBAA);
 
 // 16-bit branch instructions

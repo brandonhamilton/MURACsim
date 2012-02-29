@@ -1032,7 +1032,7 @@ const struct armConfigS armConfigTable[] = {
                 .Immediate_instrs = 0,  // Immediate instructions
                 .Interwork_instrs = 2,  // Interwork instructions
                 .Jazelle_instrs   = 1,  // Jazelle instructions
-                .Morac_instrs     = 1   // MORAC instructions
+                .Murac_instrs     = 1   // MURAC instructions
             },
             .ID_ISAR2 = {
                 .LoadStore_instrs      = 1, // LoadStore instructions
@@ -1256,7 +1256,7 @@ const struct armConfigS armConfigTable[] = {
                 .Immediate_instrs = 1,  // Immediate instructions
                 .Interwork_instrs = 2,  // Interwork instructions
                 .Jazelle_instrs   = 1,  // Jazelle instructions
-                .Morac_instrs     = 1   // MORAC instructions
+                .Murac_instrs     = 1   // MURAC instructions
             },
             .ID_ISAR2 = {
                 .LoadStore_instrs      = 1, // LoadStore instructions
@@ -1449,7 +1449,7 @@ const struct armConfigS armConfigTable[] = {
                 .Immediate_instrs = 1,  // Immediate instructions
                 .Interwork_instrs = 3,  // Interwork instructions
                 .Jazelle_instrs   = 1,  // Jazelle instructions
-                .Morac_instrs     = 1   // MORAC instructions
+                .Murac_instrs     = 1   // MURAC instructions
             },
             .ID_ISAR2 = {
                 .LoadStore_instrs      = 1, // LoadStore instructions
@@ -1720,7 +1720,7 @@ const struct armConfigS armConfigTable[] = {
                 .Immediate_instrs = 1,  // Immediate instructions
                 .Interwork_instrs = 3,  // Interwork instructions
                 .Jazelle_instrs   = 1,  // Jazelle instructions
-                .Morac_instrs     = 1   // MORAC instructions
+                .Murac_instrs     = 1   // MURAC instructions
             },
             .ID_ISAR2 = {
                 .LoadStore_instrs      = 1, // LoadStore instructions
@@ -2001,7 +2001,7 @@ const struct armConfigS armConfigTable[] = {
                 .Immediate_instrs = 1,  /* Immediate instructions */            \
                 .Interwork_instrs = 3,  /* Interwork instructions */            \
                 .Jazelle_instrs   = 1,  /* Jazelle instructions */              \
-                .Morac_instrs     = 1   /* MORAC Instructions */                \
+                .Murac_instrs     = 1   /* MURAC Instructions */                \
             },                                                                  \
             .ID_ISAR2 = {                                                       \
                 .LoadStore_instrs      = 1, /* LoadStore instructions */        \
@@ -2330,7 +2330,7 @@ const struct armConfigS armConfigTable[] = {
                 .Immediate_instrs = 1,  // Immediate instructions
                 .Interwork_instrs = 3,  // Interwork instructions
                 .Jazelle_instrs   = 1,  // Jazelle instructions
-                .Morac_instrs     = 1   // MORAC instructions
+                .Murac_instrs     = 1   // MURAC instructions
             },
             .ID_ISAR2 = {
                 .LoadStore_instrs      = 1, // LoadStore instructions

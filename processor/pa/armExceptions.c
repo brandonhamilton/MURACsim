@@ -1070,7 +1070,7 @@ void armConnectCPUNets(armP cpu) {
     armAddNetInputPort(cpu, "reset",  externalReset,  0, "Processor reset (active high)");
     armAddNetInputPort(cpu, "pabort", externalPAbort, 0, "Prefetch abort"               );
     armAddNetInputPort(cpu, "dabort", externalDAbort, 0, "Data abort"                   );
-    armAddNetOutputPort(cpu, "brarch", &cpu->brarch, "MORAC Branch Architecture" );
+    armAddNetOutputPort(cpu, "brarch", &cpu->brarch, "MURAC Branch Architecture" );
 }
 
 

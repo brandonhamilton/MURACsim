@@ -1,6 +1,6 @@
 #include <iostream>
 #include <systemc.h>
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 using std::cout;
 using std::endl;
@@ -9,11 +9,11 @@ using std::endl;
 
 static BusInterface *bus = 0;
 
-MORAC_AA_INIT(matrix_multiply_init) {
+MURAC_AA_INIT(matrix_multiply_init) {
     ::bus = bus;
 }
 
-MORAC_AA_EXECUTE(matrix_multiply_exec) {
+MURAC_AA_EXECUTE(matrix_multiply_exec) {
 
     // Read paramters from stack
     unsigned int* vars = (unsigned int*) malloc(3*sizeof(unsigned int));

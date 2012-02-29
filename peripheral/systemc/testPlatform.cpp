@@ -3,7 +3,7 @@ using namespace sc_core;
 using namespace sc_dt;
 using namespace std;
 
-#include "moracAA.hpp"
+#include "morucAA.hpp"
 #include "tlm_utils/simple_target_socket.h"
 
 struct Memory: sc_module
@@ -31,7 +31,7 @@ struct Memory: sc_module
         unsigned int     len = trans.get_data_length();
         unsigned char*   byt = trans.get_byte_enable_ptr();
 
-        adr -= MORAC_PC_ADDRESS;
+        adr -= MURAC_PC_ADDRESS;
 
         // Obliged to check address range and check for unsupported features,
         //   i.e. byte enables, streaming, and bursts
@@ -93,13 +93,13 @@ struct DummyPA: sc_module
 
 SC_MODULE(Top)
 {
-    moracAA aa;
+    muracAA aa;
     DummyPA pa;
     Memory  mem;
 
     SC_CTOR(Top):
-        aa("morac_aa"),
-        pa("morac_pa"),
+        aa("murac_aa"),
+        pa("murac_pa"),
         mem("memory")
     {
         aa.aa_bus.bind( mem.socket );

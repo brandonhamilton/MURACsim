@@ -1,12 +1,12 @@
 /**
- * MORAC Test Application - AES 128 bit cryptography
+ * MURAC Test Application - AES 128 bit cryptography
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  *
  */
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 #include <iostream>
 #include <systemc.h>
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 #include "aes.h"
 
@@ -46,7 +46,7 @@ static aes_invoker *invoker;
 static BusInterface* bus;
 
 
-MORAC_AA_INIT(aes128) {
+MURAC_AA_INIT(aes128) {
     ::bus = bus;
     invoker = new aes_invoker();
     return 0;

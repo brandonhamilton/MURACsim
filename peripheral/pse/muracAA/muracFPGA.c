@@ -1,19 +1,19 @@
 /**
- * Morac FPGA peripheral
+ * Murac FPGA peripheral
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  */
 
 
-#define PREFIX "MoracFPGA"
+#define PREFIX "MuracFPGA"
 
 #include "peripheral/impTypes.h"
 #include "peripheral/bhm.h"
 #include "peripheral/ppm.h"
-#include "moracFPGA.h"
+#include "muracFPGA.h"
 
 #define REGISTER_SIZE 4
 
-static MoracFPGAState fpgaState;
+static MuracFPGAState fpgaState;
 static Uns32 finishOnReset = 0;
 Uns32 diagnosticLevel;
 
@@ -35,7 +35,7 @@ static inline Uns32 byteSwap(Uns32 data){
 PPM_NET_CB(brArchIRQ) {
     if ( ppmReadNet(fpgaState.brarch) == 1) {
         if (diagnosticLevel >= 3) {
-            bhmMessage("I", "moracFPGA", "Branch Architecture interrupt received\n");
+            bhmMessage("I", "muracFPGA", "Branch Architecture interrupt received\n");
         }
         if(!fpgaState.busy) {
             bhmTriggerEvent(fpgaState.start);
@@ -53,23 +53,23 @@ static void auxiliaryArchitectureThread(void *user) {
     Uns32 instCount;
     for (;;) {
         if (diagnosticLevel >= 3) {
-            bhmMessage("I", "moracFPGA", "auxiliaryArchitectureThread waiting\n");
+            bhmMessage("I", "muracFPGA", "auxiliaryArchitectureThread waiting\n");
         }
         fpgaState.busy = False;
         bhmWaitEvent(fpgaState.start);
         if (diagnosticLevel >= 3) {
-            bhmMessage("I", "moracFPGA", "auxiliaryArchitectureThread processing\n");
+            bhmMessage("I", "muracFPGA", "auxiliaryArchitectureThread processing\n");
         }
         fpgaState.busy = True;
 
-        ppmReadAddressSpace(fpgaState.readHandle, MORAC_PC_ADDRESS, 4, &pc);
-        bhmMessage("I", "moracFPGA", "PC is 0x%x\n", pc);
+        ppmReadAddressSpace(fpgaState.readHandle, MURAC_PC_ADDRESS, 4, &pc);
+        bhmMessage("I", "muracFPGA", "PC is 0x%x\n", pc);
 
-        ppmReadAddressSpace(fpgaState.readHandle, MORAC_PC_ADDRESS + 4, 4, &instSize);
-        bhmMessage("I", "moracFPGA", "AA Instruction size is %d\n", instSize);
+        ppmReadAddressSpace(fpgaState.readHandle, MURAC_PC_ADDRESS + 4, 4, &instSize);
+        bhmMessage("I", "muracFPGA", "AA Instruction size is %d\n", instSize);
 
-        ppmReadAddressSpace(fpgaState.readHandle, MORAC_PC_ADDRESS + 8, 4, &instCount);
-        bhmMessage("I", "moracFPGA", "AA Instruction count is %d\n", instCount);
+        ppmReadAddressSpace(fpgaState.readHandle, MURAC_PC_ADDRESS + 8, 4, &instCount);
+        bhmMessage("I", "muracFPGA", "AA Instruction count is %d\n", instCount);
 
         // Trigger RetArch
         ppmWriteNet(fpgaState.intRetArch, 1);
@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
     /* Create thread */
     fpgaState.start = bhmCreateEvent();
     fpgaState.busy = False;
-    fpgaState.thread = bhmCreateThread(auxiliaryArchitectureThread, (void*)0, "moracFPGAthread", &fpgaState.stack[THREAD_STACK] );
+    fpgaState.thread = bhmCreateThread(auxiliaryArchitectureThread, (void*)0, "muracFPGAthread", &fpgaState.stack[THREAD_STACK] );
 
     /* Idle until triggered */
     wait_event = bhmCreateEvent();

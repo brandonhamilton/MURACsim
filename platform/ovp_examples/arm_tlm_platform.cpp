@@ -20,9 +20,9 @@
 #include "../processor/tlm2.0/processor.igen.hpp"
 #endif
 
-class MoracPlatform : public sc_core::sc_module {
+class MuracPlatform : public sc_core::sc_module {
   public:
-    MoracPlatform (sc_core::sc_module_name name);
+    MuracPlatform (sc_core::sc_module_name name);
     icmTLMPlatform  platform;
 
     decoder<2,2>    pa_bus;      // PA bus
@@ -33,12 +33,12 @@ class MoracPlatform : public sc_core::sc_module {
     ram             aa_memory;
     ram             shared_memory;
 
-    moracFPGA       aa;       // Morac Auxilliary Architecture
+    muracFPGA       aa;       // Murac Auxilliary Architecture
 
 #ifdef INTECEPT_OBJECT_SUPPORTED
-    arm             pa;       // Morac Primary architecture
+    arm             pa;       // Murac Primary architecture
 #else
-    morac_arm       pa;       // Morac Primary architecture
+    murac_arm       pa;       // Murac Primary architecture
 #endif
    
     icmAttrListObject *attributesForPA() {
@@ -52,7 +52,7 @@ class MoracPlatform : public sc_core::sc_module {
 };
 
 
-MoracPlatform::MoracPlatform (sc_core::sc_module_name name)
+MuracPlatform::MuracPlatform (sc_core::sc_module_name name)
     : sc_core::sc_module (name),
       platform ("icm", ICM_VERBOSE | ICM_STOP_ON_CTRLC| ICM_ENABLE_IMPERAS_INTERCEPTS | ICM_WALLCLOCK),
       pa_bus("pa_bus"),
@@ -61,15 +61,15 @@ MoracPlatform::MoracPlatform (sc_core::sc_module_name name)
       pa_memory("mem_pa", "sp1", 0x100000),
       aa_memory("mem_aa", "sp1", 0x100000),
       shared_memory("mem_shared", "sp1", 0x100000),
-      aa ( "aa", MORAC_AA_FPGA_PSE_FILE, 0 ),
+      aa ( "aa", MURAC_AA_FPGA_PSE_FILE, 0 ),
 #ifdef INTECEPT_OBJECT_SUPPORTED
       pa ( "pa", 0, ICM_ATTR_SIMEX | ICM_ATTR_TRACE_ICOUNT | ICM_ATTR_RELAXED_SCHED, attributesForPA() )
 #else
-      pa ( "pa", 0, MORAC_PA_MODEL_FILE, ICM_ATTR_SIMEX | ICM_ATTR_TRACE_ICOUNT | ICM_ATTR_RELAXED_SCHED, attributesForPA() )
+      pa ( "pa", 0, MURAC_PA_MODEL_FILE, ICM_ATTR_SIMEX | ICM_ATTR_TRACE_ICOUNT | ICM_ATTR_RELAXED_SCHED, attributesForPA() )
 #endif
 {
 #ifdef INTECEPT_OBJECT_SUPPORTED
-    pa.addInterceptObject("pa", MORAC_PA_INSTRUCTIONS_FILE, "modelAttrs", 0);
+    pa.addInterceptObject("pa", MURAC_PA_INSTRUCTIONS_FILE, "modelAttrs", 0);
 #endif
     // PA bus master
     pa.INSTRUCTION.socket(pa_bus.target_socket[0]);
@@ -111,7 +111,7 @@ int sc_main (int argc, char *argv[]) {
     if (argc == 2) {
         exe = argv[1];
     } else {
-        cout << "Usage: morac_tlm <application>" << endl;
+        cout << "Usage: murac_tlm <application>" << endl;
         cout << "       Please specify application" << endl;
         return 0;
     }
@@ -121,14 +121,14 @@ int sc_main (int argc, char *argv[]) {
     // Ignore some of the Warning messages
     icmIgnoreMessage ("ICM_NPF");
 
-    cout << "Running MORAC TLM platform simulator" << endl;
+    cout << "Running MURAC TLM platform simulator" << endl;
 
-    MoracPlatform morac("morac");
-    unsigned char *targetPtr = morac.shared_memory.getMemory()->get_mem_ptr();
-    morac.pa.loadNativeMemory(targetPtr, 0x100000, 0x00000000, "mem_shared", exe, 0, 1, 1);
+    MuracPlatform murac("murac");
+    unsigned char *targetPtr = murac.shared_memory.getMemory()->get_mem_ptr();
+    murac.pa.loadNativeMemory(targetPtr, 0x100000, 0x00000000, "mem_shared", exe, 0, 1, 1);
 
     // Specify the debug processor.
-    morac.pa.debugThisProcessor();
+    murac.pa.debugThisProcessor();
 
     // Start the simulation
     cout << "Starting sc_main." << endl;

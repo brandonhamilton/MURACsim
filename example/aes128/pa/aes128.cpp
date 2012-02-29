@@ -1,5 +1,5 @@
 /**
- * MORAC Test Application - AES 128 bit cryptography
+ * MURAC Test Application - AES 128 bit cryptography
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  *
  */
@@ -9,7 +9,7 @@
 #include <string.h>
 
 #include "../aa/embed/aes128.h"
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 void printdata(const char *data) {
     for (int i = 0; i < 16; i++) {
@@ -19,7 +19,7 @@ void printdata(const char *data) {
 }
 int main(void) {
 
-    printf("AES-128 example...\n");
+    printf("[PA] MURAC AES-128 example...\n");
     
     char *key   = (char *) malloc(16);
     sprintf(key, "mysimpletestkey!");
@@ -43,13 +43,13 @@ int main(void) {
     vars[2] = (unsigned int) encrypt_output;
     vars[3] = (unsigned int) decrypt_output;
 
-    MORAC_SET_PTR(vars)
+    MURAC_SET_PTR(vars)
 
     EXECUTE_AES128
     
-    printf("Encryption output: ");
+    printf("[PA] Encryption output: ");
     printdata(encrypt_output);
-    printf("Example finished...\n");
+    printf("[PA] Example finished...\n");
 
     free(key);
     free(input);

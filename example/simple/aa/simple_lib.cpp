@@ -1,6 +1,6 @@
 
 #include "simple.hpp"
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 using std::cout;
 using std::endl;
@@ -48,7 +48,7 @@ public:
 
 static _simple simple;
 
-MORAC_AA_INIT(simple_init) {
+MURAC_AA_INIT(simple_init) {
 
     simple.bus = bus;
     
@@ -62,7 +62,7 @@ MORAC_AA_INIT(simple_init) {
 
 int run_simple_simulation(unsigned long int stack) {
     int i = 0;
-    cout << "Executing simple simulation" << endl;
+    cout << "[AA] Executing simple simulation" << endl;
 
     sc_time step(100,SC_MS);
 

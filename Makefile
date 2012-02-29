@@ -1,5 +1,5 @@
 #
-# MORAC Makefile
+# MURAC Makefile
 # Author: Brandon Hamilton <brandon.hamilton@gmail.com>
 
 #
@@ -35,7 +35,7 @@ TLM_PERIPH      = $(IMP_LIB_INC)/ovpworld.org/modelSupport/tlmPeripheral/1.0/tlm
 TLM_PROC        = $(IMP_LIB_INC)/ovpworld.org/modelSupport/tlmProcessor/1.0/tlm2.0
 TLM_PLAT        = $(IMP_LIB_INC)/ovpworld.org/modelSupport/tlmPlatform/1.0/tlm2.0
 
-TLM_MORAC		= peripheral/systemc
+TLM_MURAC		= peripheral/systemc
 
 TLM_OBJDIRSYS   = build/$(IMPERAS_ARCH)/tlm
 TLM_ARCHIVE     = $(TLM_OBJDIRSYS)/tlmSupport.a
@@ -45,7 +45,7 @@ TLM_OBJECTS = $(TLM_OBJDIRSYS)/icmCpuManager.o \
 		$(TLM_OBJDIRSYS)/tlmProcessor.o \
 		$(TLM_OBJDIRSYS)/tlmPeripheral.o \
 		$(TLM_OBJDIRSYS)/tlmMemory.o \
-		$(TLM_OBJDIRSYS)/moracAA.o
+		$(TLM_OBJDIRSYS)/muracAA.o
 
 PSE_OBJDIRSYS         = build/$(IMPERAS_ARCH)/pse
 
@@ -68,7 +68,7 @@ CPPFLAGS  = -g -Wno-long-long -Wall -DSC_INCLUDE_DYNAMIC_PROCESSES -D_CRT_SECURE
 
 BUILD_FULL_CPU_MODEL=1
 
-MORAC_EMBED_TOOL = framework/morac_embed
+MURAC_EMBED_TOOL = framework/murac_embed
 
 MAKEPASS?=0
 ifeq ($(MAKEPASS),0)
@@ -126,16 +126,16 @@ endif
 #
 ifeq ($(MAKEPASS),1)
 
-all: $(MORAC_EMBED_TOOL) $(SHARED_SYSTEMC_LIBRARY)
+all: $(MURAC_EMBED_TOOL) $(SHARED_SYSTEMC_LIBRARY)
 
-$(MORAC_EMBED_TOOL): framework/morac_embed.c
-	$(V) $(CC) -o framework/morac_embed framework/morac_embed.c
+$(MURAC_EMBED_TOOL): framework/murac_embed.c
+	$(V) $(CC) -o framework/murac_embed framework/murac_embed.c
 
 $(SHARED_SYSTEMC_LIBRARY): 
 	$(V) $(CPP) -shared --no-undefined -o $(SHARED_SYSTEMC_LIBRARY) $(CPPFLAGS) -L$(SYSTEMC_LIB_DIR) -lsystemc
 
 clean:
-	$(V) - rm -f $(MORAC_EMBED_TOOL) $(SHARED_SYSTEMC_LIBRARY)
+	$(V) - rm -f $(MURAC_EMBED_TOOL) $(SHARED_SYSTEMC_LIBRARY)
 
 endif
 
@@ -151,13 +151,13 @@ endif
 
 include $(IMPERAS_HOME)/lib/Linux/CrossCompiler/PSE.makefile.include
 
-SRCS.c = $(wildcard peripheral/pse/moracAA/*.c)
+SRCS.c = $(wildcard peripheral/pse/muracAA/*.c)
 OBJS.c = $(foreach obj, $(SRCS.c:.c=.o), $(obj))
 OBJS = $(OBJS.c)
 
-all: $(PSE_OBJDIRSYS)/moracAA.pse
+all: $(PSE_OBJDIRSYS)/muracAA.pse
 
-$(PSE_OBJDIRSYS)/moracAA.pse: $(OBJS)
+$(PSE_OBJDIRSYS)/muracAA.pse: $(OBJS)
 	$(V) echo "Cross Linking Peripheral $@"
 	$(V) mkdir -p $(@D)
 	$(V) $(PSE_LINK) -o $@ $^ $(CFLAGS) $(PSE_LDFLAGS) $(LDFLAGS)
@@ -168,7 +168,7 @@ $(PSE_OBJDIRSYS)/moracAA.pse: $(OBJS)
 	$(V) $(PSE_CC) -g -gdwarf-2 -c -o $@ $< $(CFLAGS)
 
 clean:
-	$(V) - rm -f $(OBJS) $(PSE_OBJDIRSYS)/moracAA.pse
+	$(V) - rm -f $(OBJS) $(PSE_OBJDIRSYS)/muracAA.pse
 
 endif
 
@@ -177,14 +177,14 @@ endif
 #
 ifeq ($(MAKEPASS),3)
 
-MORAC_PA_INSTRUCTIONS_FILE = "./library/moracPAinstructions.$(SHRSUF)"
-MORAC_PA_MODEL_FILE        = "./processor/paModel.$(SHRSUF)"
-MORAC_AA_FPGA_PSE_FILE	   = $(PSE_OBJDIRSYS)/moracAA.pse
+MURAC_PA_INSTRUCTIONS_FILE = "./library/muracPAinstructions.$(SHRSUF)"
+MURAC_PA_MODEL_FILE        = "./processor/paModel.$(SHRSUF)"
+MURAC_AA_FPGA_PSE_FILE	   = $(PSE_OBJDIRSYS)/muracAA.pse
 
 ifeq ($(BUILD_FULL_CPU_MODEL),0)
-all: $(TLM_OBJDIRSYS) $(MORAC_PA_INSTRUCTIONS_FILE) morac_sim morac_sim_fs
+all: $(TLM_OBJDIRSYS) $(MURAC_PA_INSTRUCTIONS_FILE) murac_sim murac_sim_fs
 else
-all: $(TLM_OBJDIRSYS) processor/paModel.$(SHRSUF) morac_sim morac_sim_fs
+all: $(TLM_OBJDIRSYS) processor/paModel.$(SHRSUF) murac_sim murac_sim_fs
 endif
 
 SRCS.c = $(wildcard processor/pa/*.c)
@@ -214,11 +214,11 @@ arm_tlm_platform: platform/ovp_examples/arm_tlm_platform.o $(TLM_ARCHIVE)
 	$(V) echo "Linking platform (TLM 2.0 PSE) $@"
 	$(V) $(CPP) -o $@  $^ $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) $(SIM_LDFLAGS) $(TLM_LDFLAGS) 
 
-morac_sim: platform/morac_sim.o $(TLM_ARCHIVE)
+murac_sim: platform/murac_sim.o $(TLM_ARCHIVE)
 	$(V) echo "Linking platform (TLM 2.0 Simulator) $@"
 	$(V) $(CPP) -Wl,-export-dynamic -o $@  $^ $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) $(SIM_LDFLAGS) $(TLM_LDFLAGS) -ldl 
 
-morac_sim_fs: platform/morac_sim_fs.o $(TLM_ARCHIVE)
+murac_sim_fs: platform/murac_sim_fs.o $(TLM_ARCHIVE)
 	$(V) echo "Linking platform (TLM 2.0 Full System Simulator) $@"
 	$(V) $(CPP) -Wl,-export-dynamic -o $@  $^ $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) $(SIM_LDFLAGS) $(TLM_LDFLAGS) -ldl 
 
@@ -227,53 +227,53 @@ platform/ovp_examples/arm_platform.o: platform/ovp_examples/arm_platform.c
 	$(V) echo "Compiling platform (PSE) $@"
 	$(V) $(CC) -c -o $@  $< $(CFLAGS) \
 	  -DINTECEPT_OBJECT_SUPPORTED="1" \
-	  -DMORAC_PA_INSTRUCTIONS_FILE="\"${MORAC_PA_INSTRUCTIONS_FILE}\"" \
-	  -DMORAC_AA_FPGA_PSE_FILE="\"${MORAC_AA_FPGA_PSE_FILE}\""
+	  -DMURAC_PA_INSTRUCTIONS_FILE="\"${MURAC_PA_INSTRUCTIONS_FILE}\"" \
+	  -DMURAC_AA_FPGA_PSE_FILE="\"${MURAC_AA_FPGA_PSE_FILE}\""
 
 platform/ovp_examples/arm_tlm_platform.o: platform/ovp_examples/arm_tlm_platform.cpp
 	$(V) echo "Compiling platform (TLM 2.0 PSE) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) \
 	  -DINTECEPT_OBJECT_SUPPORTED="1" \
-	  -DMORAC_PA_INSTRUCTIONS_FILE="\"${MORAC_PA_INSTRUCTIONS_FILE}\"" \
-	  -DMORAC_AA_FPGA_PSE_FILE="\"${MORAC_AA_FPGA_PSE_FILE}\""
+	  -DMURAC_PA_INSTRUCTIONS_FILE="\"${MURAC_PA_INSTRUCTIONS_FILE}\"" \
+	  -DMURAC_AA_FPGA_PSE_FILE="\"${MURAC_AA_FPGA_PSE_FILE}\""
 
-platform/morac_sim.o: platform/morac_sim.cpp
+platform/murac_sim.o: platform/murac_sim.cpp
 	$(V) echo "Compiling platform (TLM 2.0 Simulator) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) \
 	  -DINTECEPT_OBJECT_SUPPORTED="1" \
-	  -DMORAC_PA_INSTRUCTIONS_FILE="\"${MORAC_PA_INSTRUCTIONS_FILE}\"" \
+	  -DMURAC_PA_INSTRUCTIONS_FILE="\"${MURAC_PA_INSTRUCTIONS_FILE}\"" \
 	  -DSYSTEMC_LIB="\"${SHARED_SYSTEMC_LIBRARY}\""
 
-platform/morac_sim_fs.o: platform/morac_sim_fs.cpp
+platform/murac_sim_fs.o: platform/murac_sim_fs.cpp
 	$(V) echo "Compiling platform (TLM 2.0 Full System Simulator) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) \
 	  -DINTECEPT_OBJECT_SUPPORTED="1" \
-	  -DMORAC_PA_INSTRUCTIONS_FILE="\"${MORAC_PA_INSTRUCTIONS_FILE}\"" \
+	  -DMURAC_PA_INSTRUCTIONS_FILE="\"${MURAC_PA_INSTRUCTIONS_FILE}\"" \
 	  -DSYSTEMC_LIB="\"${SHARED_SYSTEMC_LIBRARY}\""
 
 else
 platform/ovp_examples/arm_platform.o: platform/ovp_examples/arm_platform.c
 	$(V) echo "Compiling platform (PSE) $@"
 	$(V) $(CC) -c -o $@  $< $(CFLAGS) \
-	  -DMORAC_PA_MODEL_FILE="\"${MORAC_PA_MODEL_FILE}\"" \
-	  -DMORAC_AA_FPGA_PSE_FILE="\"${MORAC_AA_FPGA_PSE_FILE}\""
+	  -DMURAC_PA_MODEL_FILE="\"${MURAC_PA_MODEL_FILE}\"" \
+	  -DMURAC_AA_FPGA_PSE_FILE="\"${MURAC_AA_FPGA_PSE_FILE}\""
 
 platform/ovp_examples/arm_tlm_platform.o: platform/ovp_examples/arm_tlm_platform.cpp
 	$(V) echo "Compiling platform (TLM 2.0 PSE) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) \
-	  -DMORAC_PA_MODEL_FILE="\"${MORAC_PA_MODEL_FILE}\"" \
-	  -DMORAC_AA_FPGA_PSE_FILE="\"${MORAC_AA_FPGA_PSE_FILE}\""
+	  -DMURAC_PA_MODEL_FILE="\"${MURAC_PA_MODEL_FILE}\"" \
+	  -DMURAC_AA_FPGA_PSE_FILE="\"${MURAC_AA_FPGA_PSE_FILE}\""
 	
-platform/morac_sim.o: platform/morac_sim.cpp
+platform/murac_sim.o: platform/murac_sim.cpp
 	$(V) echo "Compiling platform (TLM 2.0 Simulator) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) \
-	  -DMORAC_PA_MODEL_FILE="\"${MORAC_PA_MODEL_FILE}\"" \
+	  -DMURAC_PA_MODEL_FILE="\"${MURAC_PA_MODEL_FILE}\"" \
 	  -DSYSTEMC_LIB="\"${SHARED_SYSTEMC_LIBRARY}\""	
 	  
-platform/morac_sim_fs.o: platform/morac_sim_fs.cpp
+platform/murac_sim_fs.o: platform/murac_sim_fs.cpp
 	$(V) echo "Compiling platform (TLM 2.0 Full System Simulator) $@"
 	$(V) $(CPP) -c -o $@  $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) \
-	  -DMORAC_PA_MODEL_FILE="\"${MORAC_PA_MODEL_FILE}\"" \
+	  -DMURAC_PA_MODEL_FILE="\"${MURAC_PA_MODEL_FILE}\"" \
 	  -DSYSTEMC_LIB="\"${SHARED_SYSTEMC_LIBRARY}\""	
 	      
 endif
@@ -301,7 +301,7 @@ $(TLM_OBJDIRSYS)/tlmPeripheral.o: $(TLM_PERIPH)/tlmPeripheral.cpp $(TLM_PERIPH)/
 	$(V) echo "Compiling $@"
 	$(V) $(CPP) -c -o $@ $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) > /dev/null
 
-$(TLM_OBJDIRSYS)/moracAA.o: $(TLM_MORAC)/moracAA.cpp $(TLM_MORAC)/moracAA.hpp
+$(TLM_OBJDIRSYS)/muracAA.o: $(TLM_MURAC)/muracAA.cpp $(TLM_MURAC)/muracAA.hpp
 	$(V) echo "Compiling $@"
 	$(V) $(CPP) -c -o $@ $< $(CPPFLAGS) $(CFLAGS) $(TLM_CFLAGS) -export-dynamic -ldl > /dev/null
 
@@ -311,21 +311,21 @@ $(TLM_ARCHIVE): $(TLM_OBJECTS)
 #
 # Build the enhanced instruction set
 #
-$(MORAC_PA_INSTRUCTIONS_FILE): library/moracPAinstructions.o
-	$(V) echo "Linking MORAC Primary Architecture Instruction Set Library"
+$(MURAC_PA_INSTRUCTIONS_FILE): library/muracPAinstructions.o
+	$(V) echo "Linking MURAC Primary Architecture Instruction Set Library"
 	$(V) $(CC) $(CFLAGS) --shared -o $@ $^ $(IMPERAS_VMISTUBS) $(LDFLAGS)
 
-library/moracPAinstructions.o: library/moracPAinstructions.c
-	$(V) echo "Compiling MORAC Primary Architecture Instruction Set Library $@"
+library/muracPAinstructions.o: library/muracPAinstructions.c
+	$(V) echo "Compiling MURAC Primary Architecture Instruction Set Library $@"
 	$(V) $(CC) $(CFLAGS) -c -o $@ $^
 
 clean:
 	$(V) - rm -f $(OBJS) $(SOLIB)
 	$(V) - rm -rf build
-	$(V) - rm -f platform/morac_sim.o morac_sim platform/morac_sim_fs.o morac_sim_fs
+	$(V) - rm -f platform/murac_sim.o murac_sim platform/murac_sim_fs.o murac_sim_fs
 	$(V) - rm -f platform/ovp_examples/arm_platform.o arm_platform
 	$(V) - rm -f platform/ovp_examples/arm_tlm_platform.o arm_tlm_platform
-	$(V) - rm -f library/moracPAinstructions.o $(MORAC_PA_INSTRUCTIONS_FILE)
+	$(V) - rm -f library/muracPAinstructions.o $(MURAC_PA_INSTRUCTIONS_FILE)
 
 endif
 

@@ -1,5 +1,5 @@
 /**
- * MORAC Test Application - Smith-Waterman Sequence Alignment
+ * MURAC Test Application - Smith-Waterman Sequence Alignment
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  *
  * Adapted from the DNA Sequence Alignment Accelerator project on OpenCores.org
@@ -19,7 +19,7 @@
 #define SC_INCLUDE_DYNAMIC_PROCESSES
 #include <iostream>
 #include <systemc.h>
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 #include "sw_gen_affine.h"
 
@@ -68,8 +68,8 @@ public:
 static BusInterface* bus;
 static seqalign_invoker* invoker;
 
-MORAC_AA_INIT(seqalign) {
-    printf("Initialising Sequence Alignment example\n");
+MURAC_AA_INIT(seqalign) {
+    printf("[AA] Initialising Sequence Alignment example\n");
     ::bus = bus;
     ::invoker = new seqalign_invoker();
     return 0;
@@ -77,10 +77,10 @@ MORAC_AA_INIT(seqalign) {
 
 unsigned char do_sequence() {
 
-    printf("Starting Dequence Alignment\n");
+    printf("[AA] Starting Sequence Alignment\n");
     invoker->reset.write(0);
     WAIT_CYCLES(1)
-    printf("Reseting PEs\n");
+    printf("[AA] Reseting PEs\n");
     invoker->reset.write(1);
     invoker->input_valid.write(0);
     invoker->data.write(0);
@@ -88,7 +88,7 @@ unsigned char do_sequence() {
     WAIT_CYCLES(2)
     invoker->reset.write(0);
     WAIT_CYCLES(10)
-    printf("Writing data\n");
+    printf("[AA] Writing data\n");
     invoker->data = N_G;
     invoker->input_valid = 1;
     
@@ -101,7 +101,7 @@ unsigned char do_sequence() {
 
     WAIT_CYCLES(2)
 
-    printf("Waiting for result\n");
+    printf("[AA] Waiting for result\n");
     invoker->input_valid = 0;
     WAIT_CYCLES(20)
 
@@ -112,7 +112,7 @@ unsigned char do_sequence() {
     }
 
     if (timeout <= 0) {
-        printf("Error, sequence did not complete...\n");
+        printf("[AA] Error, sequence did not complete...\n");
         return 0;
     }
 
@@ -125,13 +125,13 @@ int run_seqalign_simulation(unsigned long int stack) {
 
     /* Read the stack*/
     unsigned int variables[NUMBER_OF_INPUT_VARS];
-    printf("Reading addresses from bus at 0x%x\n", stack);
+    printf("[AA] Reading addresses from bus at 0x%x\n", stack);
     if (bus->read(stack, (unsigned char*) variables, NUMBER_OF_INPUT_VARS*sizeof(unsigned int))) {
-        printf("Error reading fom bus 0x%x\n", stack);
+        printf("[AA] Error reading fom bus 0x%x\n", stack);
         return -1;
     }
     for (int i = 0; i < NUMBER_OF_INPUT_VARS; i++) {
-        printf("   Memory address[%d] = 0x%x\n", i, variables[i]);
+        printf("[AA]    Memory address[%d] = 0x%x\n", i, variables[i]);
     }
 
     invoker->query_length = LOG_LEN;
@@ -141,7 +141,7 @@ int run_seqalign_simulation(unsigned long int stack) {
 
     /* Output */
     if (bus->write(variables[1], &result, 1)) {
-        printf("Error writing to bus 0x%x\n", variables[1]);
+        printf("[AA] Error writing to bus 0x%x\n", variables[1]);
         return -1;
     } 
     return 0;

@@ -612,7 +612,7 @@ void armEmitEndBlock(void);
 void armEmitValidateBlockMask(armBlockMask blockMask);
 
 //
-// Emit code to signal MORAC BrArch 
+// Emit code to signal MURAC BrArch 
 //
 void armEmitBrArch(void);
 

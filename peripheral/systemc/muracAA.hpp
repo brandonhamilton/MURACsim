@@ -1,37 +1,37 @@
 /**
- * Morac FPGA peripheral HDL integration framework
+ * Murac FPGA peripheral HDL integration framework
  * Author: Brandon Hamilton <brandon.hamilton@gmail.com>
  */
 
-#ifndef MORAC_AA_H
-#define MORAC_AA_H
+#ifndef MURAC_AA_H
+#define MURAC_AA_H
 
 #include "tlm.h"
 #include "tlm_utils/simple_target_socket.h"
 #include "tlm_utils/simple_initiator_socket.h"
-#include "../../framework/morac.h"
+#include "../../framework/murac.h"
 
-#define MORAC_PC_ADDRESS 0xCF000000
+#define MURAC_PC_ADDRESS 0xCF000000
 
-class moracAA;
+class muracAA;
 
-class moracAAInterupt: public tlm::tlm_analysis_if<int> {
+class muracAAInterupt: public tlm::tlm_analysis_if<int> {
   public:
-      moracAAInterupt(const char *name, moracAA *aa);
+      muracAAInterupt(const char *name, muracAA *aa);
       void write(const int &value);
 
   private:
-      moracAA      *m_aa;
+      muracAA      *m_aa;
       const char   *m_name;
 };
 
-class moracAA: public sc_core::sc_module, BusInterface {
+class muracAA: public sc_core::sc_module, BusInterface {
     public:
-        moracAA (sc_core::sc_module_name  name);
-        tlm_utils::simple_initiator_socket<moracAA> aa_bus;
+        muracAA (sc_core::sc_module_name  name);
+        tlm_utils::simple_initiator_socket<muracAA> aa_bus;
         
         /* BrArch interrupt from the PA */
-        moracAAInterupt brarch;
+        muracAAInterupt brarch;
 
         /* RetArch interrupt to signal return to PA */
         tlm::tlm_analysis_port<int>  intRetArch;
@@ -66,4 +66,4 @@ class moracAA: public sc_core::sc_module, BusInterface {
         int invokePluginSimulation(const char* path, unsigned long int ptr);
 };
 
-#endif  // MORAC_AA_H
+#endif  // MURAC_AA_H

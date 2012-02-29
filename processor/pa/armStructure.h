@@ -362,7 +362,7 @@ typedef struct armS {
     // PAREMETER VALUES
     armParamValuesP parameterValues;
 
-    // MORAC IRQ
+    // MURAC IRQ
     Uns32          brarch;
 
     // PORT LIST

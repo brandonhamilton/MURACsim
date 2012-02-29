@@ -2,12 +2,12 @@
 //    Slave Port busPort1
 //    Slave Port busPort2
 
-#ifndef PERIPHERAL_MORACFPGA_1_0
-#define PERIPHERAL_MORACFPGA_1_0
+#ifndef PERIPHERAL_MURACFPGA_1_0
+#define PERIPHERAL_MURACFPGA_1_0
 #include "ovpworld.org/modelSupport/tlmPeripheral/1.0/tlm2.0/tlmPeripheral.hpp"
 using namespace sc_core;
 
-class moracFPGA : public icmPeripheral
+class muracFPGA : public icmPeripheral
 {
   private:
     const char *getModel() {
@@ -20,7 +20,7 @@ class moracFPGA : public icmPeripheral
     icmInputNetPort  brarch;
     icmOutputNetPort intRetArch;
 
-    moracFPGA(sc_module_name name, const char *model_file, icmAttrListObject *initialAttrs = 0 )
+    muracFPGA(sc_module_name name, const char *model_file, icmAttrListObject *initialAttrs = 0 )
         : icmPeripheral(name, model_file ? model_file : getModel(), 0, initialAttrs)
         , memory_read(this, "fpga_memread", 32)
         , memory_write(this, "fpga_memwrite", 32)
@@ -29,6 +29,6 @@ class moracFPGA : public icmPeripheral
     {
     }
 
-}; /* class MmoracFPGA */
+}; /* class MuracFPGA */
 
 #endif

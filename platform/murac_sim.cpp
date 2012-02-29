@@ -13,7 +13,7 @@
 #include "ovpworld.org/modelSupport/tlmPlatform/1.0/tlm2.0/tlmPlatform.hpp"
 #include "ovpworld.org/modelSupport/tlmDecoder/1.0/tlm2.0/tlmDecoder.hpp"
 #include "ovpworld.org/memory/ram/1.0/tlm2.0/tlmMemory.hpp"
-#include "../peripheral/systemc/moracAA.hpp"
+#include "../peripheral/systemc/muracAA.hpp"
 #ifdef INTECEPT_OBJECT_SUPPORTED
 #include "arm.ovpworld.org/processor/arm/1.0/tlm2.0/processor.igen.hpp"
 #else
@@ -26,9 +26,9 @@
 
 #define SC_INCLUDE_DYNAMIC_PROCESSES 1
 
-class MoracPlatform : public sc_core::sc_module {
+class MuracPlatform : public sc_core::sc_module {
   public:
-    MoracPlatform (sc_core::sc_module_name name);
+    MuracPlatform (sc_core::sc_module_name name);
     icmTLMPlatform  platform;
     
     decoder<2,3>    pa_bus;      // PA bus
@@ -38,14 +38,14 @@ class MoracPlatform : public sc_core::sc_module {
     ram             pa_memory;     // Local memory for PA
     ram             aa_memory;     // Local memory for AA
     ram             shared_memory; // Shared memory exposed to all processors
-    ram             morac_memory;  // Shared memory used for morac specific signalling
+    ram             murac_memory;  // Shared memory used for murac specific signalling
 
-    moracAA         aa;       // Morac Auxiliary architecture
+    muracAA         aa;       // Murac Auxiliary architecture
 
 #ifdef INTECEPT_OBJECT_SUPPORTED
-    arm             pa;       // Morac Primary architecture
+    arm             pa;       // Murac Primary architecture
 #else
-    morac_arm       pa;       // Morac Primary architecture
+    murac_arm       pa;       // Murac Primary architecture
 #endif
 
     icmAttrListObject *attributesForPA() {
@@ -59,7 +59,7 @@ class MoracPlatform : public sc_core::sc_module {
 };
 
 
-MoracPlatform::MoracPlatform (sc_core::sc_module_name name)
+MuracPlatform::MuracPlatform (sc_core::sc_module_name name)
     : sc_core::sc_module (name),
       platform ("icm", ICM_VERBOSE | ICM_STOP_ON_CTRLC | ICM_ENABLE_IMPERAS_INTERCEPTS | ICM_WALLCLOCK),
       pa_bus("pa_bus"),
@@ -68,16 +68,16 @@ MoracPlatform::MoracPlatform (sc_core::sc_module_name name)
       pa_memory("mem_pa", "sp1", 0x100000),
       aa_memory("mem_aa", "sp1", 0x100000),
       shared_memory("mem_shared", "sp1", 0x1000000),
-      morac_memory("mem_morac", "sp1", 0x1000000),
+      murac_memory("mem_murac", "sp1", 0x1000000),
       aa("aa"),
 #ifdef INTECEPT_OBJECT_SUPPORTED
       pa ( "pa", 0, ICM_ATTR_SIMEX | ICM_ATTR_TRACE_ICOUNT | ICM_ATTR_RELAXED_SCHED, attributesForPA() )
 #else
-      pa ( "pa", 0, MORAC_PA_MODEL_FILE, ICM_ATTR_SIMEX | ICM_ATTR_TRACE_ICOUNT | ICM_ATTR_RELAXED_SCHED , attributesForPA() )
+      pa ( "pa", 0, MURAC_PA_MODEL_FILE, ICM_ATTR_SIMEX | ICM_ATTR_TRACE_ICOUNT | ICM_ATTR_RELAXED_SCHED , attributesForPA() )
 #endif
 {
 #ifdef INTECEPT_OBJECT_SUPPORTED
-    pa.addInterceptObject("pa", MORAC_PA_INSTRUCTIONS_FILE, "modelAttrs", 0);
+    pa.addInterceptObject("pa", MURAC_PA_INSTRUCTIONS_FILE, "modelAttrs", 0);
 #endif
 
     // PA bus master
@@ -111,7 +111,7 @@ MoracPlatform::MoracPlatform (sc_core::sc_module_name name)
     shared_bus.initiator_socket[0](shared_memory.sp1);
     shared_bus.setDecode(0, 0x00000000, 0x00FFFFFF);
 
-    shared_bus.initiator_socket[1](morac_memory.sp1);
+    shared_bus.initiator_socket[1](murac_memory.sp1);
     shared_bus.setDecode(1, 0xCF000000, 0xCFFFFFFF);
 
     // Interrupts
@@ -121,7 +121,7 @@ MoracPlatform::MoracPlatform (sc_core::sc_module_name name)
 
 int sc_main (int argc, char *argv[]) {
 
-    const char *pa_exe = "application/pa/morac_test.ARM7.elf";
+    const char *pa_exe = "application/pa/murac_test.ARM7.elf";
     const char *aa_lib = 0;//SYSTEMC_LIB;
     sc_time stop(10000,SC_MS);
 
@@ -131,7 +131,7 @@ int sc_main (int argc, char *argv[]) {
             aa_lib = argv[2];
         }
     } else {
-        cout << endl << "Usage: " << argv[0] << " <pa application> <aa library>" << endl;
+        cout << endl << "Usage: " << argv[0] << " <pa application> [<aa library>]" << endl;
         cout << "       Please specify application and library for simulation" << endl;
         return 0;
     }
@@ -141,23 +141,23 @@ int sc_main (int argc, char *argv[]) {
     // Ignore some of the Warning messages
     icmIgnoreMessage ("ICM_NPF");
 
-    cout << "Running MORAC TLM platform simulator" << endl;
+    cout << "Running MURAC TLM platform simulator" << endl;
 
-    MoracPlatform morac("morac");
+    MuracPlatform murac("murac");
 
-    morac.pa.setIPS(1000);
+    murac.pa.setIPS(1000);
 
     // Load the PA application into memory
-    unsigned char *targetPtr = morac.shared_memory.getMemory()->get_mem_ptr();
-    morac.pa.loadNativeMemory(targetPtr, 0x1000000, 0x00000000, "mem_shared", pa_exe, 0, 1, 1);
+    unsigned char *targetPtr = murac.shared_memory.getMemory()->get_mem_ptr();
+    murac.pa.loadNativeMemory(targetPtr, 0x1000000, 0x00000000, "mem_shared", pa_exe, 0, 1, 1);
 
     // Load the AA library
     if (aa_lib) {
-        morac.aa.loadLibrary(aa_lib);
+        murac.aa.loadLibrary(aa_lib);
     }
 
     // Specify the debug processor.
-    morac.pa.debugThisProcessor();
+    murac.pa.debugThisProcessor();
 
     sc_report_handler::set_actions (SC_ID_MORE_THAN_ONE_SIGNAL_DRIVER_, SC_DO_NOTHING);
     // Start the simulation

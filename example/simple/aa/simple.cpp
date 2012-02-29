@@ -1,12 +1,12 @@
 
 #include "simple.hpp"
-#include "../../../framework/morac.h"
+#include "../../../framework/murac.h"
 
 using std::cout;
 using std::endl;
 
-MORAC_AA_EXECUTE(example) {
-    cout << "RUNNING MORAC AA SIMULATOR EXAMPLE" << endl;
+MURAC_AA_EXECUTE(example) {
+    cout << "[AA] MURAC AA Simulator Example" << endl;
     run_simple_simulation(stack);
     return 1;
 }
